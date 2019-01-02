@@ -93,4 +93,8 @@ public class Board extends Pane
     {
         object.getChildren().remove(node);
     }
+    public void clear()
+    {
+        object.getChildren().clear();
+    }
 }

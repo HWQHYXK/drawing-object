@@ -12,6 +12,7 @@ public class MainPane extends BorderPane
     {
         center=new Board(this);
         left=new ToolBar(this);
+        top = new drawingBoard.MenuBar(this);
 
         setTop(top);//上面的菜单
         setLeft(left);//左边的工具栏
