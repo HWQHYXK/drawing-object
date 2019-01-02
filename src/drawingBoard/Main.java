@@ -27,9 +27,9 @@ public class Main extends Application{
         pane.setPrefWidth(200);
         pane.setPrefHeight(200);
 
-        pane.setCenter(this.buildBoard());//中间的画板
         pane.setTop(this.buildMenu());//上面的菜单
         pane.setRight(this.buildToolBar());//左边的工具栏
+        pane.setCenter(this.buildBoard());//中间的画板
 
         Scene scene=new Scene(pane);
         return scene;
