@@ -4,6 +4,6 @@ import javafx.scene.layout.Pane;
 
 public interface Tool
 {
-     void press(MouseEvent e,Pane pane);
-     void drag(MouseEvent e,Pane pane);
+     void press(MouseEvent e,Board pane);
+     void drag(MouseEvent e,Board pane);
 }

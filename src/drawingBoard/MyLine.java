@@ -9,13 +9,13 @@ public class MyLine implements Tool
 {
     private Line currentLine;
     @Override
-    public void press(MouseEvent e,Pane pane)
+    public void press(MouseEvent e,Board pane)
     {
         currentLine=new Line(e.getX(),e.getY(),e.getX(),e.getY());
-        pane.getChildren().add(currentLine);
+        pane.add(currentLine);
     }
     @Override
-    public void drag(MouseEvent e,Pane pane)
+    public void drag(MouseEvent e,Board pane)
     {
         currentLine.setEndX(e.getX());
         currentLine.setEndY(e.getY());
