@@ -15,20 +15,36 @@ import javafx.stage.StageStyle;
 
 
 public class Main extends Application{
-    private static double minX,maxX,minY,maxY;
-    public void start(Stage hwq) {
-        Circle circle = new Circle(10);
-        Pane pane = new Pane();
-        pane.setPrefWidth(200);
-        pane.setPrefHeight(200);
-//        pane.getChildren().add(circle);
-        WorkBench workBench = new WorkBench(pane, 0.5, 0.5);
-        circle.layoutXProperty().bind(pane.widthProperty().divide(2));
-        circle.layoutYProperty().bind(pane.heightProperty().divide(2));
-        Scene scene = new Scene(pane);
-        hwq.setScene(scene);
+    public void start(Stage hwq)
+    {
+        hwq.setScene(getScene());
         hwq.setTitle("Drawing Object");
         hwq.show();
+    }
+    private Scene getScene()
+    {
+        BorderPane pane=new BorderPane();
+        pane.setPrefWidth(200);
+        pane.setPrefHeight(200);
+
+        pane.setCenter(this.buildBoard());//中间的画板
+        pane.setTop(this.buildMenu());//上面的菜单
+        pane.setRight(this.buildToolBar());//左边的工具栏
+
+        Scene scene=new Scene(pane);
+        return scene;
+    }
+    private Node buildMenu()
+    {
+        return null;
+    }
+    private HBox buildToolBar()
+    {
+        return null;
+    }
+    private Pane buildBoard()
+    {
+        return null;
     }
     public static void main(String[] args)
     {
