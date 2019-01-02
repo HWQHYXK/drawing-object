@@ -5,7 +5,7 @@ import javafx.scene.layout.BorderPane;
 
 public class MainPane extends BorderPane
 {
-    private MenuBar up;
+    private MenuBar top;
     private Board center;
     private ToolBar left;
     public MainPane()
@@ -13,13 +13,13 @@ public class MainPane extends BorderPane
         center=new Board(this);
         left=new ToolBar(this);
 
-        setTop(up);//上面的菜单
-        setRight(left);//左边的工具栏
+        setTop(top);//上面的菜单
+        setLeft(left);//左边的工具栏
         setCenter(center);//中间的画板
     }
     public MenuBar getMyUp()
     {
-        return up;
+        return top;
     }
     public Board getMyCenter()
     {
