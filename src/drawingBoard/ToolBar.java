@@ -17,7 +17,13 @@ public class ToolBar extends VBox
         MyLine myLine=new MyLine();
         this.add(myLine);
 
-        nowTool=allTool.get(0);
+        MyCircle myCircle=new MyCircle();
+        this.add(myCircle);
+
+        MyRectangle myRectangular=new MyRectangle();
+        this.add(myRectangular);
+
+        nowTool=allTool.get(2);
     }
     public Tool getTool()
     {
