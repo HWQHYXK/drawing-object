@@ -18,9 +18,7 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application
 {
-    private MenuBar up;
-    private ToolBar left;
-    private Board center;
+    private MainPane pane;
     public void start(Stage hwq)
     {
         hwq.setScene(getScene());
@@ -32,16 +30,8 @@ public class Main extends Application
         BorderPane pane=new BorderPane();
         pane.setPrefWidth(1800);
         pane.setPrefHeight(900);
-/*------------------------------------------------------------------------------*/
-        center=new Board();
-        left=new ToolBar();
-        center.setToolBar(left);
-        left.setPane(center);
-        left.setTool();
 
-        pane.setTop(up);//上面的菜单
-        pane.setRight(left);//左边的工具栏
-        pane.setCenter(center);//中间的画板
+        pane=new MainPane();
 
         Scene scene=new Scene(pane);
         return scene;

@@ -1,26 +1,24 @@
 package drawingBoard;
 
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 public class Board extends Pane
 {
-    ToolBar toolBar;
-    public Board()
+    MainPane fa;
+    public Board(MainPane fa)
     {
-        this.setOnMousePressed(this::press);
-        this.setOnMouseDragged(this::drag);
-    }
-    public void setToolBar(ToolBar toolBar)
-    {
-        this.toolBar=toolBar;
+        this.fa=fa;
+        setOnMousePressed(this::press);
+        setOnMouseDragged(this::drag);
     }
     public void press(MouseEvent e)
     {
-        toolBar.getTool().press(e);
+        fa.getMyLeft().getTool().press(e,this);
     }
     public void drag(MouseEvent e)
     {
-        toolBar.getTool().drag(e);
+        fa.getMyLeft().getTool().drag(e,this);
     }
 }

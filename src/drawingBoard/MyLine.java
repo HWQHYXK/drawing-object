@@ -7,21 +7,15 @@ import javafx.scene.shape.Line;
 
 public class MyLine implements Tool
 {
-    private Pane pane;
     private Line currentLine;
-
-    public void setPane(Pane pane)
-    {
-        this.pane=pane;
-    }
     @Override
-    public void press(MouseEvent e)
+    public void press(MouseEvent e,Pane pane)
     {
         currentLine=new Line(e.getX(),e.getY(),e.getX(),e.getY());
         pane.getChildren().add(currentLine);
     }
     @Override
-    public void drag(MouseEvent e)
+    public void drag(MouseEvent e,Pane pane)
     {
         currentLine.setEndX(e.getX());
         currentLine.setEndY(e.getY());

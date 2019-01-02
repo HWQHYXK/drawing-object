@@ -1,26 +1,20 @@
 package drawingBoard;
 
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
 public class ToolBar extends VBox
 {
-    private Pane pane;
+    BorderPane fa;
     private Tool nowTool;
     ArrayList<Tool> allTool=new ArrayList<Tool>();
-    public ToolBar()
+    public ToolBar(BorderPane fa)
     {
-    }
-    public void setPane(Pane pane)
-    {
-        this.pane=pane;
-    }
-    public void setTool()
-    {
+        this.fa=fa;
+
         MyLine myLine=new MyLine();
-        myLine.setPane(pane);
         this.add(myLine);
 
         nowTool=allTool.get(0);
