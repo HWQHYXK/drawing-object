@@ -10,15 +10,27 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 
 public class Board extends Pane
 {
     MainPane fa;
+    private StringProperty x = new SimpleStringProperty("x: "),y = new SimpleStringProperty("y: ");
     private Group object = new Group();
     private GetPos getPos;
     private static Bloom bloom = new Bloom(0.3);
     private final static double RATIO = 0.8;
+
+    public String getX()
+    {
+        return x.get();
+    }
+
+    public String getY()
+    {
+        return y.get();
+    }
 
     public GetPos getGetPos()
     {
@@ -55,10 +67,17 @@ public class Board extends Pane
     {
         fa.getMyLeft().getTool().drag(e,this);
     }
+
+    public Group getObject()
+    {
+        return object;
+    }
+
     class GetPos implements EventHandler<MouseEvent>
     {
-        private boolean flag = false;
         public StringProperty x = new SimpleStringProperty("x: "),y = new SimpleStringProperty("y: ");
+        private boolean flag = false;
+
         public GetPos()
         {
 //            fa.getMyBottom().getChildren().add(x);
@@ -105,7 +124,11 @@ public class Board extends Pane
         });
         node.setOnMousePressed(event ->
         {
-            delete(node);
+//            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
+        });
+        node.setOnDragEntered(event ->
+        {
+            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
         });
     }
     public void delete(Node node)

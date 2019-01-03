@@ -55,6 +55,17 @@ public class ToolBar extends VBox
         });
         getChildren().add(rectangle);
 
+        Eraser myEraser = new Eraser();
+        this.add(myEraser);
+        Button eraser = new Button("Eraser");
+        eraser.setStyle("-fx-background-color: Silver");
+        eraser.prefWidthProperty().bind(prefWidthProperty());
+        eraser.setOnAction(event ->
+        {
+            switchh(myEraser);
+        });
+        getChildren().add(eraser);
+
         nowTool=allTool.get(2);
     }
     public Tool getTool()

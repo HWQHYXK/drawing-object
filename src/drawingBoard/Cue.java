@@ -3,11 +3,11 @@ package drawingBoard;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class PropertyBar extends HBox
+public class Cue extends HBox
 {
     private MainPane fa;
     private Label x = new Label("x: "), y = new Label("y: ");
-    public PropertyBar(MainPane fa)
+    public Cue(MainPane fa)
     {
         super();
         this.fa = fa;

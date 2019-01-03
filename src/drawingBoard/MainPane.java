@@ -9,13 +9,13 @@ public class MainPane extends BorderPane
     private MenuBar top;
     private Board center;
     private ToolBar left;
-    private PropertyBar bottom;
+    private Cue bottom;
     public MainPane()
     {
         center=new Board(this);
         left=new ToolBar(this);
         top = new drawingBoard.MenuBar(this);
-        bottom = new PropertyBar(this);
+        bottom = new Cue(this);
 
         setCenter(center);//中间的画板
         setLeft(left);//左边的工具栏
