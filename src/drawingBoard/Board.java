@@ -1,8 +1,11 @@
 package drawingBoard;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.effect.Bloom;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -13,15 +16,22 @@ public class Board extends Pane
 {
     MainPane fa;
     private Group object = new Group();
+    private GetPos getPos;
     private static Bloom bloom = new Bloom(0.3);
     private final static double RATIO = 0.8;
+
+    public GetPos getGetPos()
+    {
+        return getPos;
+    }
+
     public Board(MainPane fa)
     {
         this.fa=fa;
         getChildren().add(object);
         object.layoutXProperty().bind(widthProperty().divide(2));
         object.layoutYProperty().bind(heightProperty().divide(2));
-        GetPos getPos = new GetPos();
+        getPos = new GetPos();
         object.setOnMouseEntered(getPos);
         object.setOnMouseMoved(getPos);
         object.setOnMouseExited(getPos);
@@ -36,7 +46,6 @@ public class Board extends Pane
         setOnMousePressed(this::press);
         setOnMouseDragged(this::drag);
 
-        add(new Circle(50));
     }
     public void press(MouseEvent e)
     {
@@ -49,19 +58,29 @@ public class Board extends Pane
     class GetPos implements EventHandler<MouseEvent>
     {
         private boolean flag = false;
+        public StringProperty x = new SimpleStringProperty("x: "),y = new SimpleStringProperty("y: ");
+        public GetPos()
+        {
+//            fa.getMyBottom().getChildren().add(x);
+//            fa.getMyBottom().getChildren().add(y);
+        }
         @Override
         public void handle(MouseEvent event)
         {
             if(event.getEventType().equals(MouseEvent.MOUSE_ENTERED))
             {
                 flag = true;
-                System.out.println("x:"+event.getX());
-                System.out.println("y:"+event.getY());
+                x.setValue("x: "+event.getX());
+                y.setValue("y: "+event.getY());
+//                System.out.println("x:"+event.getX());
+//                System.out.println("y:"+event.getY());
             }
             else if(flag&&event.getEventType().equals(MouseEvent.MOUSE_MOVED))
             {
-                System.out.println("x:"+event.getX());
-                System.out.println("y:"+event.getY());
+                x.setValue("x: "+event.getX());
+                y.setValue("y: "+event.getY());
+//                System.out.println("x:"+event.getX());
+//                System.out.println("y:"+event.getY());
             }
             else
             {
