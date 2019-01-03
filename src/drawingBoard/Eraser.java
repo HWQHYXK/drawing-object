@@ -13,7 +13,10 @@ public class Eraser implements Tool
     @Override
     public void drag(MouseEvent e, Board pane)
     {
-
+        pane.addEventFilter(MouseEvent.DRAG_DETECTED, event ->
+        {
+            pane.startFullDrag();
+        });
     }
 
     @Override

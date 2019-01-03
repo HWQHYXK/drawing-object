@@ -128,9 +128,9 @@ public class Board extends Pane
         });
         node.setOnMousePressed(event ->
         {
-//            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
+            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
         });
-        node.setOnDragEntered(event ->
+        node.setOnMouseDragEntered(event ->
         {
             if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
         });
