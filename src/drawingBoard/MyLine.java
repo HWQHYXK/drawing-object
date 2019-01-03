@@ -20,4 +20,9 @@ public class MyLine implements Tool
         currentLine.setEndX(e.getX());
         currentLine.setEndY(e.getY());
     }
+    @Override
+    public void release(MouseEvent e, Board pane)
+    {
+
+    }
 }

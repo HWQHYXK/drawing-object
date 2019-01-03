@@ -57,7 +57,7 @@ public class Board extends Pane
         });
         setOnMousePressed(this::press);
         setOnMouseDragged(this::drag);
-
+        setOnMouseReleased(this::release);
     }
     public void press(MouseEvent e)
     {
@@ -66,6 +66,10 @@ public class Board extends Pane
     public void drag(MouseEvent e)
     {
         fa.getMyLeft().getTool().drag(e,this);
+    }
+    public void release(MouseEvent e)
+    {
+        fa.getMyLeft().getTool().release(e,this);
     }
 
     public Group getObject()

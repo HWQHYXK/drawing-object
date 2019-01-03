@@ -22,4 +22,9 @@ public class MyCircle implements Tool
         currentEllipse.setCenterX((e.getX()+leftx)/2);
         currentEllipse.setCenterY((e.getY()+lefty)/2);
     }
+    @Override
+    public void release(MouseEvent e, Board pane)
+    {
+
+    }
 }
