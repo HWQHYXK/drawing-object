@@ -15,4 +15,10 @@ public class Eraser implements Tool
     {
 
     }
+
+    @Override
+    public void release(MouseEvent e, Board pane)
+    {
+
+    }
 }
