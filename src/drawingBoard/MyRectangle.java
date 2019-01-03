@@ -29,4 +29,9 @@ public class MyRectangle implements Tool
             currentRectangle.setY(Math.min(originalY,e.getY()));
         }
     }
+    @Override
+    public void release(MouseEvent e, Board pane)
+    {
+
+    }
 }

@@ -57,8 +57,7 @@ public class Board extends Pane
         });
         setOnMousePressed(this::press);
         setOnMouseDragged(this::drag);
-        add(new Circle(100));
-
+        setOnMouseReleased(this::release);
     }
     public void press(MouseEvent e)
     {
@@ -67,6 +66,10 @@ public class Board extends Pane
     public void drag(MouseEvent e)
     {
         fa.getMyLeft().getTool().drag(e,this);
+    }
+    public void release(MouseEvent e)
+    {
+        fa.getMyLeft().getTool().release(e,this);
     }
 
     public Group getObject()
@@ -129,9 +132,7 @@ public class Board extends Pane
         });
         node.setOnDragEntered(event ->
         {
-            node.setStyle("-fx-fill: INDIANRED; -fx-stroke:INDIANRED");
-            node.setEffect(bloom);
-//            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
+            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
         });
     }
     public void delete(Node node)
