@@ -18,9 +18,16 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application
 {
-    private MainPane pane;
+    private static Stage stage;
+
+    public static Stage getStage()
+    {
+        return stage;
+    }
+
     public void start(Stage hwq)
     {
+        stage = hwq;
         hwq.setScene(getScene());
         hwq.setTitle("Drawing Object");
         hwq.show();

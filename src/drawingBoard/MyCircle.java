@@ -6,7 +6,7 @@ import javafx.scene.shape.Ellipse;
 public class MyCircle implements Tool
 {
     private double leftx,lefty;
-    private Ellipse currentEllipse;
+    private Ellipse currentEllipse = new Ellipse();
     @Override
     public void press(MouseEvent e, Board pane)
     {
@@ -25,6 +25,10 @@ public class MyCircle implements Tool
     @Override
     public void release(MouseEvent e, Board pane)
     {
-
+        if(currentEllipse.getRadiusX()<20&&currentEllipse.getRadiusY()<20)
+        {
+            AlertBox alertBox = new AlertBox("The object you draw is small, Do you still want to add it?", "Too Small", "yes", "no");
+            if (alertBox.getMode() != 1)pane.delete(currentEllipse);
+        }
     }
 }
