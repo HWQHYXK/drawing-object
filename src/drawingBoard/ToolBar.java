@@ -97,8 +97,11 @@ public class ToolBar extends VBox
         getChildren().add(eraser);
 
         myChooser = new MyChooser();
-        this.add(myEraser);
-        chooser = new Button("Chooser");
+        this.add(myChooser);
+        imageView = new ImageView("image/chooser.png");
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        chooser = new Button("Select", imageView);
 //        chooser.setStyle("-fx-background-color: Silver");
 //        chooser.prefWidthProperty().bind(prefWidthProperty());
         getChildren().add(chooser);
