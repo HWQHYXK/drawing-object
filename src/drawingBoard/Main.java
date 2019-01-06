@@ -20,7 +20,7 @@ import javafx.stage.StageStyle;
 public class Main extends Application
 {
     private static Stage stage;
-
+    private static Scene scene;
     public static Stage getStage()
     {
         return stage;
@@ -29,19 +29,17 @@ public class Main extends Application
     public void start(Stage hwq)
     {
         stage = hwq;
-        hwq.setScene(getScene());
+        MainPane pane=new MainPane();
+        pane.setPrefWidth(1800);
+        pane.setPrefHeight(900);
+        scene=new Scene(pane);
+        pane.getMyLeft().initBind();
+        hwq.setScene(scene);
         hwq.setTitle("Drawing Object");
         hwq.show();
     }
-    private Scene getScene()
+    public static Scene getScene()
     {
-        BorderPane pane=new BorderPane();
-        pane.setPrefWidth(1800);
-        pane.setPrefHeight(900);
-
-        pane=new MainPane();
-
-        Scene scene=new Scene(pane);
         return scene;
     }
     public static void main(String[] args)

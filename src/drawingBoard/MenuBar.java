@@ -6,6 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
@@ -39,6 +42,12 @@ public class MenuBar extends javafx.scene.control.MenuBar
     public MenuBar(MainPane fa)
     {
         this.fa = fa;
+        setStyle("-fx-background-color: linear-gradient(to right, YellowGreen,  GreenYellow, Yellow);");
+        setOpacity(0.8);
+        InnerShadow innerShadow = new InnerShadow();
+        innerShadow.setOffsetX(1.0);
+        innerShadow.setOffsetY(1.0);
+        setEffect(innerShadow);
         fileMenu.getItems().addAll(newMenuItem, openMenuItem, saveMenuItem, exportMenuItem ,exitMenuItem);
         drawMenu.getItems().addAll(path,line, rec, circle);
         newMenuItem.setOnAction(event ->
@@ -66,8 +75,11 @@ public class MenuBar extends javafx.scene.control.MenuBar
                 File file = fileChooser.showOpenDialog(Main.getStage());
                 try
                 {
-                    LittleDesrailizer desrializer = new LittleDesrailizer(file);
-                    desrializer.assign(fa.getMyCenter().getObject());
+                    if(file!=null)
+                    {
+                        LittleDesrailizer desrializer = new LittleDesrailizer(file);
+                        desrializer.assign(fa.getMyCenter().getObject());
+                    }
                 }catch (IOException e)
                 {
                     AlertBox alertBox = new AlertBox("IOException", "Error", "Retry", "Cancel");
@@ -88,7 +100,11 @@ public class MenuBar extends javafx.scene.control.MenuBar
                     fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Geometry Shape Description Language(*.gsdl)","*.gsdl"),
                             new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"));
                     File file = fileChooser.showSaveDialog(Main.getStage());
-                    if(file!=null)translate(file);
+                    if(file!=null)
+                    {
+                        translate(file);
+                        recentSave = true;
+                    }
                 }
             }catch (IOException e)
             {
@@ -135,7 +151,7 @@ public class MenuBar extends javafx.scene.control.MenuBar
             AlertBox alertBox = new AlertBox("Do you want to save your object?", "Confirm", "Yes", "No");
             return alertBox.getMode();
         }
-        else return 0;
+        else return -1;
     }
     private void translate(File file) throws IOException
     {

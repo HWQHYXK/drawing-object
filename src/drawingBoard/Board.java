@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Bloom;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
@@ -40,6 +41,12 @@ public class Board extends Pane
     public Board(MainPane fa)
     {
         this.fa=fa;
+//        setStyle("-fx-background-color: radial-gradient(center 50% 50%, radius 50%,  cyan, SkyBlue 75%, LightGreen)");
+        setStyle("-fx-background-color: Silver");
+//        InnerShadow innerShadow = new InnerShadow();
+//        innerShadow.setOffsetX(1.0);
+//        innerShadow.setOffsetY(1.0);
+//        setEffect(innerShadow);
         getChildren().add(object);
         object.layoutXProperty().bind(widthProperty().divide(2));
         object.layoutYProperty().bind(heightProperty().divide(2));

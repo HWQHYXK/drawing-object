@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -16,8 +17,11 @@ public class AlertBox
     public AlertBox(String message , String title, String yes, String no)
     {
         Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
         window.initStyle(StageStyle.UTILITY);
         window.setTitle(title);
+        window.setWidth(300);
+        window.setHeight(150);
         HBox hb = new HBox(50);
         Button confirm = new Button(yes);
         Button deny = new Button(no);
