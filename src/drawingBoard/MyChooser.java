@@ -1,5 +1,6 @@
 package drawingBoard;
 
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_BLUEPeer;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -30,7 +31,7 @@ public class MyChooser implements Tool
         for(Node node:object.getChildren())
             if(Geometry.inRange(x1,y1,x2,y2,node))
             {
-                    
+                node.setStyle("-fx-fill:#2eff2d");
             }
     }
 }

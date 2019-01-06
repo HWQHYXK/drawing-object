@@ -26,10 +26,10 @@ public class Geometry
             if(intersect((Line)node,new Line(x2,y2,x2,y1))) return true;
             if(intersect((Line)node,new Line(x2,y1,x1,y1))) return true;
 
-            if(!left((Line)node,new Line(x1,y1,x1,y2))) return false;
-            if(!left((Line)node,new Line(x1,y2,x2,y2))) return false;
-            if(!left((Line)node,new Line(x2,y2,x2,y1))) return false;
-            if(!left((Line)node,new Line(x2,y1,x1,y1))) return false;
+            boolean isleft=left((Line)node,new Line(x1,y1,x1,y2));
+            if(isleft != left((Line)node,new Line(x1,y2,x2,y2))) return false;
+            if(isleft != left((Line)node,new Line(x2,y2,x2,y1))) return false;
+            if(isleft != left((Line)node,new Line(x2,y1,x1,y1))) return false;
 
             return true;
         }
@@ -56,15 +56,15 @@ public class Geometry
                 node.setRotate(0);
                 return inRange(A.x,A.y,B.x,B.y,node);
             }
-            if(inRange(x1,y1,x2,y2,(Ellipse) node)) return true;
-            if(inRange(x1,y1,x2,y2,(Ellipse) node)) return true;
-            if(inRange(x1,y1,x2,y2,(Ellipse) node)) return true;
-            if(inRange(x1,y1,x2,y2,(Ellipse) node)) return true;
+            if(intersect(new Line(x1,y1,x1,y2),(Ellipse) node)) return true;
+            if(intersect(new Line(x1,y2,x2,y2),(Ellipse) node)) return true;
+            if(intersect(new Line(x2,y2,x2,y1),(Ellipse) node)) return true;
+            if(intersect(new Line(x2,y1,x1,y1),(Ellipse) node)) return true;
 
-            if(!left((Ellipse) node,new Line(x1,y1,x1,y2),true)) return false;
-            if(!left((Ellipse) node,new Line(x1,y2,x2,y2),true)) return false;
-            if(!left((Ellipse) node,new Line(x2,y2,x2,y1),true)) return false;
-            if(!left((Ellipse) node,new Line(x2,y1,x1,y1),true)) return false;
+            boolean isleft=left((Ellipse) node,new Line(x1,y1,x1,y2),true);
+            if(isleft != left((Ellipse) node,new Line(x1,y2,x2,y2),true)) return false;
+            if(isleft != left((Ellipse) node,new Line(x2,y2,x2,y1),true)) return false;
+            if(isleft != left((Ellipse) node,new Line(x2,y1,x1,y1),true)) return false;
 
             return true;
         }
@@ -118,6 +118,8 @@ public class Geometry
     {
         //线段l1是否在线段l2的左边
         rotate(l1);rotate(l2);
+        boolean hwq=left(l1.getStartX(),l1.getStartY(),l2);
+        boolean qwh=left(l1.getEndX(),l1.getEndY(),l2);
         return left(l1.getStartX(),l1.getStartY(),l2) && left(l1.getEndX(),l1.getEndY(),l2);
     }
     static boolean left(Ellipse ellipse,Line l,boolean hasJudge)

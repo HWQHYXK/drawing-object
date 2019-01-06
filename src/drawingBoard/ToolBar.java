@@ -66,6 +66,17 @@ public class ToolBar extends VBox
         });
         getChildren().add(eraser);
 
+        MyChooser myChooser = new MyChooser();
+        this.add(myEraser);
+        Button chooser = new Button("Chooser");
+        chooser.setStyle("-fx-background-color: Silver");
+        chooser.prefWidthProperty().bind(prefWidthProperty());
+        chooser.setOnAction(event ->
+        {
+            switchh(myChooser);
+        });
+        getChildren().add(chooser);
+
         nowTool=allTool.get(2);
     }
     public Tool getTool()
