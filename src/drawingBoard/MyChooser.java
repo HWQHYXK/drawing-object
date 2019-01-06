@@ -30,7 +30,7 @@ public class MyChooser implements Tool
         for(Node node:object.getChildren())
             if(Geometry.inRange(x1,y1,x2,y2,node))
             {
-
+                    
             }
     }
 }
