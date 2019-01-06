@@ -1,6 +1,5 @@
 package drawingBoard;
 
-import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -20,8 +19,8 @@ public class MainPane extends BorderPane
         bottom = new Cue(this);
         right =new PropertyBar(this);
 
-        setTop(top);//上面的菜单
         setCenter(center);//中间的画板
+        setTop(top);//上面的菜单
         setBottom(bottom);//下面的坐标提示栏
         setLeft(left);//左边的工具栏
         setRight(right);//右边的属性栏
@@ -38,7 +37,7 @@ public class MainPane extends BorderPane
     {
         return left;
     }
-    public HBox getMyBottom()
+    public Cue getMyBottom()
     {
         return bottom;
     }

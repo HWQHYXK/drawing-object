@@ -111,20 +111,20 @@ public class Board extends Pane
             }
         }
     }
-    public void add(Node node)
+    public void load(Node node)
     {
-        node.setLayoutX(node.getLayoutX()-getWidth()/2);
-        node.setLayoutY(node.getLayoutY()-getHeight()/2);
         object.getChildren().add(node);
         node.setOnMouseEntered(event ->
         {
             node.setStyle("-fx-fill: INDIANRED; -fx-stroke:INDIANRED");
             node.setEffect(bloom);
+            fa.getMyBottom().setSerial(String.valueOf(object.getChildren().indexOf(node)));
         });
         node.setOnMouseExited(event ->
         {
             node.setStyle(null);
             node.setEffect(null);
+            fa.getMyBottom().setSerial("");
         });
         node.setOnMousePressed(event ->
         {
@@ -134,6 +134,13 @@ public class Board extends Pane
         {
             if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
         });
+    }
+    public void add(Node node)
+    {
+        fa.getMyTop().setRecentSave(false);
+        node.setLayoutX(-getWidth()/2);
+        node.setLayoutY(-getHeight()/2);
+        load(node);
     }
     public void delete(Node node)
     {

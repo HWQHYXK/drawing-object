@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 public class MyRectangle implements Tool
 {
     private double originalX,originalY;
-    private Rectangle currentRectangle;
+    private Rectangle currentRectangle = new Rectangle();
     @Override
     public void press(MouseEvent e, Board pane)
     {
@@ -32,6 +32,10 @@ public class MyRectangle implements Tool
     @Override
     public void release(MouseEvent e, Board pane)
     {
-
+        if(currentRectangle.getWidth()<20&&currentRectangle.getHeight()<20)
+        {
+            AlertBox alertBox = new AlertBox("The object you draw is small, Do you still want to add it?", "Too Small", "yes", "no");
+            if (alertBox.getMode() != 1)pane.delete(currentRectangle);
+        }
     }
 }
