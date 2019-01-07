@@ -5,13 +5,15 @@ import javafx.scene.shape.Polygon;
 
 public class MyPolygon implements Tool
 {
-    private Polygon currentPolygon;
+    private Polygon currentPolygon=new Polygon();
     @Override
     public void press(MouseEvent e, Board pane)
     {
-        currentPolygon=new Polygon();
-        pane.add(currentPolygon);
-        currentPolygon.getPoints().addAll(e.getX(),e.getY());
+        if(currentPolygon.getPoints().size()==0)
+        {
+            pane.add(currentPolygon=new Polygon());
+            currentPolygon.getPoints().addAll(e.getX(), e.getY());
+        }
         currentPolygon.getPoints().addAll(e.getX(),e.getY());
     }
 
