@@ -35,6 +35,8 @@ public class Geometry
         }
         else if(node instanceof Rectangle)
         {
+            if(inRectangle(x1,y1,x2,y2,(Rectangle) node)) return true;
+
             double X=((Rectangle) node).getX();
             double Y=((Rectangle) node).getY();
             double endX=X + ((Rectangle) node).getWidth();
@@ -56,6 +58,9 @@ public class Geometry
                 node.setRotate(0);
                 return inRange(A.x,A.y,B.x,B.y,node);
             }
+
+            if(inEllipse(x1,y1,x2,y2,(Ellipse) node)) return true;
+
             if(intersect(new Line(x1,y1,x1,y2),(Ellipse) node)) return true;
             if(intersect(new Line(x1,y2,x2,y2),(Ellipse) node)) return true;
             if(intersect(new Line(x2,y2,x2,y1),(Ellipse) node)) return true;
@@ -78,11 +83,42 @@ public class Geometry
     static boolean inEllipse(Point A,Ellipse ellipse)
     {
         //点A是否在椭圆ellipse中
-        double a=ellipse.getRadiusX()/2;
-        double b=ellipse.getRadiusY()/2;
+        A=new Point(A.x-ellipse.getCenterX(),A.y-ellipse.getCenterY());
+        double a=ellipse.getRadiusX();
+        double b=ellipse.getRadiusY();
         double c=Math.sqrt(Math.abs(a*a-b*b));
         Point F1=new Point(-c,0),F2=new Point(c,0);
         return dist(A,F1)+dist(A,F2) < a+a;
+    }
+    static boolean inEllipse(double x1, double y1, double x2, double y2,Ellipse ellipse)
+    {
+        if(!inEllipse(new Point(x1,y1),ellipse)) return false;
+        if(!inEllipse(new Point(x1,y2),ellipse)) return false;
+        if(!inEllipse(new Point(x2,y1),ellipse)) return false;
+        if(!inEllipse(new Point(x2,y2),ellipse)) return false;
+        return true;
+    }
+    static boolean inRectangle(Point A,Rectangle rectangle)
+    {
+        //点A是否在矩形rectangle中
+        double x1=rectangle.getX();
+        double y1=rectangle.getY();
+        double x2=x1+rectangle.getWidth();
+        double y2=y1+rectangle.getHeight();
+        boolean isleft=left(A.x,A.y,new Line(x1,y1,x1,y2));
+        if(isleft != left(A.x,A.y,new Line(x1,y2,x2,y2))) return false;
+        if(isleft != left(A.x,A.y,new Line(x2,y2,x2,y1))) return false;
+        if(isleft != left(A.x,A.y,new Line(x2,y1,x1,y1))) return false;
+
+        return true;
+    }
+    static boolean inRectangle(double x1, double y1, double x2, double y2,Rectangle rectangle)
+    {
+        if(!inRectangle(new Point(x1,y1),rectangle)) return false;
+        if(!inRectangle(new Point(x1,y2),rectangle)) return false;
+        if(!inRectangle(new Point(x2,y1),rectangle)) return false;
+        if(!inRectangle(new Point(x2,y2),rectangle)) return false;
+        return true;
     }
     static Point rotate(Point A,Point B,double angle)
     {
@@ -118,8 +154,6 @@ public class Geometry
     {
         //线段l1是否在线段l2的左边
         rotate(l1);rotate(l2);
-        boolean hwq=left(l1.getStartX(),l1.getStartY(),l2);
-        boolean qwh=left(l1.getEndX(),l1.getEndY(),l2);
         return left(l1.getStartX(),l1.getStartY(),l2) && left(l1.getEndX(),l1.getEndY(),l2);
     }
     static boolean left(Ellipse ellipse,Line l,boolean hasJudge)
@@ -143,12 +177,25 @@ public class Geometry
         Point A=new Point(l.getStartX(),l.getStartY());
         Point B=new Point(l.getEndX(),l.getEndY());
         if(inEllipse(A,ellipse) != inEllipse(B,ellipse)) return true;
-        double a=ellipse.getRadiusX()/2;
-        double b=ellipse.getRadiusY()/2;
+        if(inEllipse(A,ellipse) && inEllipse(B,ellipse)) return false;
+        A.x-=-ellipse.getCenterX();A.y-=ellipse.getCenterY();
+        B.x-=-ellipse.getCenterX();B.y-=ellipse.getCenterY();
+        double a=ellipse.getRadiusX();
+        double b=ellipse.getRadiusY();
         if(Math.abs(A.x-B.x)<eps)
-            return A.x>=-a && A.x<=a;
+        {
+            double t=(A.x+B.x)/2;
+            t=Math.abs(b*Math.sqrt(1-t*t/(1*a*a)));
+            return t<=Math.max(A.y,B.y) && t>=Math.min(A.y,B.y);
+        }
         double k=(A.y-B.y)/(A.x-B.x);
         double t=A.x*(A.y-B.y)/(B.x-A.x)+A.y;
-        return k*k/(b*b)-((t*t)/(b*b)-1)/(a*a) > -eps;
+        double delta=a*a*a*a*b*b*k*k-(a*a*k*k+b*b)*(a*a*t*t-a*a*b*b);
+        if(delta < -eps) return false;
+        double x1=(-2*a*a*b*k-Math.sqrt(delta))/(2*(a*a*k*k+b*b));
+        if(x1<Math.min(A.x,B.x) || x1>Math.max(A.x,B.x)) return false;
+        double x2=(-2*a*a*b*k+Math.sqrt(delta))/(2*(a*a*k*k+b*b));
+        if(x2<Math.min(A.x,B.x) || x2>Math.max(A.x,B.x)) return false;
+        return true;
     }
 }
