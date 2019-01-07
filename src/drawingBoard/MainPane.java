@@ -41,7 +41,7 @@ public class MainPane extends BorderPane
     {
         return bottom;
     }
-    public VBox getMyRight()
+    public PropertyBar getMyRight()
     {
         return right;
     }

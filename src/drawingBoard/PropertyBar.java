@@ -6,16 +6,18 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
-public class PropertyBar extends VBox
+public class PropertyBar extends Pane
 {
     MainPane fa;
-    Label name = new Label("Background");
+    private Label name = new Label("Background");
     public PropertyBar(MainPane fa)
     {
-        super(10);
         prefWidthProperty().bind(fa.widthProperty().divide(5));
         this.fa=fa;
         setStyle("-fx-background-color: WHITE");
@@ -33,10 +35,15 @@ public class PropertyBar extends VBox
         InnerShadow innerShadow = new InnerShadow();
         innerShadow.setOffsetX(1.0);
         innerShadow.setOffsetY(1.0);
-        name.setAlignment(Pos.CENTER);
+        name.setFont(Font.font("Arial Black", 20));
+        name.setTextFill(Color.SKYBLUE);
+        name.setWrapText(true);
+        name.setLayoutX(40);
         name.setEffect(innerShadow);
-        name.setLabelFor(this);
-        name.setTextFill(Color.MAROON);
         getChildren().add(name);
+    }
+    public void setName(String name)
+    {
+        this.name.setText(name);
     }
 }
