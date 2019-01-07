@@ -5,7 +5,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.effect.Bloom;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Control;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
@@ -17,11 +18,15 @@ import java.util.ArrayList;
 
 public class ToolBar extends VBox
 {
-    BorderPane fa;
+    MainPane fa;
+    private Color nowColor;
+    private ColorPicker colorPicker;
     private Tool nowTool,myLine,myCircle,myRectangle,myEraser,myChooser;
     private Button line,circle,rectangle,eraser,chooser;
     private ArrayList<Tool> allTool=new ArrayList<Tool>();
-    public ToolBar(BorderPane fa)
+    private ChangeCursor changeCursor;
+
+    public ToolBar(MainPane fa)
     {
         super(20);
         this.fa=fa;
@@ -34,6 +39,13 @@ public class ToolBar extends VBox
 
         ImageView imageView;
 
+        myChooser = new MyChooser();
+        this.add(myChooser);
+        imageView = new ImageView("image/chooser.png");
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        chooser = new Button("Select", imageView);
+        getChildren().add(chooser);
 
         myLine = new MyLine();
         this.add(myLine);
@@ -41,9 +53,6 @@ public class ToolBar extends VBox
         line = new Button("Line", imageView);
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-//        line.setStyle("-fx-background-color: Silver");
-//        line.setEffect(effect);
-//        line.prefWidthProperty().bind(prefWidthProperty());
         getChildren().add(line);
 
         myCircle=new MyCircle();
@@ -52,17 +61,6 @@ public class ToolBar extends VBox
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
         circle = new Button("Ellipse", imageView);
-//        circle.setStyle("-fx-background-color: Silver");
-//        circle.setEffect(effect);
-//        circle.prefWidthProperty().bind(prefWidthProperty());
-//        circle.setOnMouseEntered(event ->
-//        {
-//            Main.getScene().setCursor(Cursor.HAND);
-//        });
-//        circle.setOnMouseExited(event ->
-//        {
-//            Main.getScene().setCursor(null);
-//        });
         getChildren().add(circle);
 
 
@@ -72,51 +70,38 @@ public class ToolBar extends VBox
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
         rectangle = new Button("Rec", imageView);
-//        rectangle.setEffect(effect);
-//        rectangle.setStyle("-fx-background-color: Silver");
-//        rectangle.prefWidthProperty().bind(prefWidthProperty());
-//        rectangle.setOnMouseEntered(event ->
-//        {
-//            Main.getScene().setCursor(Cursor.HAND);
-//        });
-//        rectangle.setOnMouseExited(event ->
-//        {
-//            Main.getScene().setCursor(null);
-//        });
         getChildren().add(rectangle);
 
-        myEraser = new Eraser();
+        myEraser = new MyEraser();
         this.add(myEraser);
         imageView = new ImageView("image/eraser.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-        eraser = new Button("Eraser",imageView);
-//        eraser.setEffect(effect);
-//        eraser.setStyle("-fx-background-color: Silver");
-//        eraser.prefWidthProperty().bind(prefWidthProperty());
+        eraser = new Button("MyEraser",imageView);
         getChildren().add(eraser);
 
-        myChooser = new MyChooser();
-        this.add(myChooser);
-        imageView = new ImageView("image/chooser.png");
-        imageView.setFitHeight(20);
-        imageView.setFitWidth(20);
-        chooser = new Button("Select", imageView);
-//        chooser.setStyle("-fx-background-color: Silver");
-//        chooser.prefWidthProperty().bind(prefWidthProperty());
-        getChildren().add(chooser);
+        colorPicker = new ColorPicker();
+        getChildren().add(colorPicker);
+        colorPicker.setOnAction(event -> nowColor = colorPicker.getValue());
 
-        nowTool=allTool.get(2);
+        nowColor = Color.BLACK;
+        nowTool=allTool.get(0);
     }
     public void initBind()
     {
-        Effect effect = new DropShadow();
-        DropShadow dropShadow = (DropShadow)effect;
-        dropShadow.setRadius(5.0);
-        dropShadow.setOffsetX(3.0);
-        dropShadow.setOffsetY(3.0);
-        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-        ChangeCursor changeCursor = new ChangeCursor();
+        changeCursor = Main.getChangeCursor();
+        DragToSuit dragToSuit = new DragToSuit(changeCursor);
+        this.setOnMouseEntered(dragToSuit);
+        this.setOnMouseExited(dragToSuit);
+        this.setOnMouseMoved(dragToSuit);
+        this.setOnMouseDragged(dragToSuit);
+        this.setOnMousePressed(dragToSuit);
+        this.setOnMouseReleased(dragToSuit);
+        chooser.setOnAction(event ->
+        {
+            switchh(myChooser);
+            changeCursor.future = Cursor.DEFAULT;
+        });
         line.setOnAction(event ->
         {
             switchh(myLine);
@@ -137,14 +122,21 @@ public class ToolBar extends VBox
             switchh(myEraser);
             changeCursor.future = Cursor.DEFAULT;
         });
-        chooser.setOnAction(event ->
+        colorPicker.setOnAction(event ->
         {
-            switchh(myChooser);
-            changeCursor.future = Cursor.DEFAULT;
+            nowColor = colorPicker.getValue();
         });
+
+
+        Effect effect = new DropShadow();
+        DropShadow dropShadow = (DropShadow)effect;
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(3.0);
+        dropShadow.setOffsetY(3.0);
+        dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
         for(Node node: getChildren())
         {
-            Button button = (Button)node;
+            Control button = (Control) node;
             button.setStyle("-fx-background-color: Silver");
             button.setEffect(effect);
             button.prefWidthProperty().bind(prefWidthProperty());
@@ -152,23 +144,65 @@ public class ToolBar extends VBox
             button.setOnMouseExited(changeCursor);
         }
     }
-    private class ChangeCursor implements EventHandler<MouseEvent>
+    public class DragToSuit implements EventHandler<MouseEvent>
     {
-        Cursor pre = Main.getScene().getCursor();
-        Cursor future;
+        private ChangeCursor changeCursor;
+        private boolean pressed = false;
+        public DragToSuit(ChangeCursor changeCursor)
+        {
+            this.changeCursor = changeCursor;
+        }
         @Override
         public void handle(MouseEvent event)
         {
             if(event.getEventType().equals(MouseEvent.MOUSE_ENTERED))
             {
-                pre = Main.getScene().getCursor();
-                Main.getScene().setCursor(Cursor.HAND);
+                if(getWidth()-event.getX()<10)
+                {
+                    Main.getScene().setCursor(Cursor.E_RESIZE);
+                }
             }
-            if(event.getEventType().equals(MouseEvent.MOUSE_EXITED))
+            else if(event.getEventType().equals(MouseEvent.MOUSE_EXITED))
             {
-                Main.getScene().setCursor(future);
+                Main.getScene().setCursor(changeCursor.future);
+            }
+            else if(event.getEventType().equals(MouseEvent.MOUSE_MOVED))
+            {
+                if(!pressed)
+                {
+                    if (getWidth() - event.getX() >= 10)
+                    {
+                        Main.getScene().setCursor(changeCursor.future);
+                    } else
+                    {
+                        Main.getScene().setCursor(Cursor.E_RESIZE);
+                    }
+                }
+            }
+            else if(event.getEventType().equals(MouseEvent.MOUSE_PRESSED))
+            {
+                if(getWidth()-event.getX()<10)
+                {
+                    pressed = true;
+                    setPrefWidth(event.getX());
+                }
+            }
+            else if(event.getEventType().equals(MouseEvent.MOUSE_DRAGGED))
+            {
+                if(pressed)
+                {
+                    setPrefWidth(event.getX());
+                }
+            }
+            else if(event.getEventType().equals(MouseEvent.MOUSE_RELEASED))
+            {
+                pressed = false;
             }
         }
+    }
+    public Color getColor()
+    {
+        return nowColor;
     }
     public Tool getTool()
     {

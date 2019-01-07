@@ -139,7 +139,7 @@ public class MenuBar extends javafx.scene.control.MenuBar
             super(file);
         }
         @Override
-        protected void add(Group group, Node node)
+        protected void add(Group group, Shape node)
         {
             fa.getMyCenter().load(node);
         }

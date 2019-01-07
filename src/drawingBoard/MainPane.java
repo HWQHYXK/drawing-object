@@ -25,6 +25,7 @@ public class MainPane extends BorderPane
         setLeft(left);//左边的工具栏
         setRight(right);//右边的属性栏
     }
+
     public MenuBar getMyTop()
     {
         return top;
@@ -41,7 +42,7 @@ public class MainPane extends BorderPane
     {
         return bottom;
     }
-    public VBox getMyRight()
+    public PropertyBar getMyRight()
     {
         return right;
     }
