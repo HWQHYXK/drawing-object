@@ -26,6 +26,8 @@ public class Geometry
             if(intersect((Line)node,new Line(x2,y2,x2,y1))) return true;
             if(intersect((Line)node,new Line(x2,y1,x1,y1))) return true;
 
+            if(Math.abs(x1-x2)<eps || Math.abs(y1-y2)<eps) return false;
+
             boolean isleft=left((Line)node,new Line(x1,y1,x1,y2));
             if(isleft != left((Line)node,new Line(x1,y2,x2,y2))) return false;
             if(isleft != left((Line)node,new Line(x2,y2,x2,y1))) return false;
@@ -42,10 +44,11 @@ public class Geometry
             double endX=X + ((Rectangle) node).getWidth();
             double endY=Y + ((Rectangle) node).getHeight();
 
-            if(inRange(x1,y1,x2,y2,new Line(X,Y,X,endY))) return true;
-            if(inRange(x1,y1,x2,y2,new Line(X,endY,endX,endY))) return true;
-            if(inRange(x1,y1,x2,y2,new Line(endX,endY,endX,Y))) return true;
-            if(inRange(x1,y1,x2,y2,new Line(endX,Y,X,Y))) return true;
+            Point P=new Point((x1+x2)/2,(y1+y2)/2);
+            if(inRange(x1,y1,x2,y2,rotate(new Line(X,Y,X,endY),P,angle))) return true;
+            if(inRange(x1,y1,x2,y2,rotate(new Line(X,endY,endX,endY),P,angle))) return true;
+            if(inRange(x1,y1,x2,y2,rotate(new Line(endX,endY,endX,Y),P,angle))) return true;
+            if(inRange(x1,y1,x2,y2,rotate(new Line(endX,Y,X,Y),P,angle))) return true;
 
             return false;
         }
@@ -66,6 +69,8 @@ public class Geometry
             if(intersect(new Line(x2,y2,x2,y1),(Ellipse) node)) return true;
             if(intersect(new Line(x2,y1,x1,y1),(Ellipse) node)) return true;
 
+            if(Math.abs(x1-x2)<eps || Math.abs(y1-y2)<eps) return false;
+
             boolean isleft=left((Ellipse) node,new Line(x1,y1,x1,y2),true);
             if(isleft != left((Ellipse) node,new Line(x1,y2,x2,y2),true)) return false;
             if(isleft != left((Ellipse) node,new Line(x2,y2,x2,y1),true)) return false;
@@ -83,12 +88,12 @@ public class Geometry
     static boolean inEllipse(Point A,Ellipse ellipse)
     {
         //点A是否在椭圆ellipse中
-        A=new Point(A.x-ellipse.getCenterX(),A.y-ellipse.getCenterY());
+        Point B=new Point(A.x-ellipse.getCenterX(),A.y-ellipse.getCenterY());
         double a=ellipse.getRadiusX();
         double b=ellipse.getRadiusY();
         double c=Math.sqrt(Math.abs(a*a-b*b));
         Point F1=new Point(-c,0),F2=new Point(c,0);
-        return dist(A,F1)+dist(A,F2) < a+a;
+        return dist(B,F1)+dist(B,F2) < a+a;
     }
     static boolean inEllipse(double x1, double y1, double x2, double y2,Ellipse ellipse)
     {
@@ -140,6 +145,13 @@ public class Geometry
         Point P=new Point((l.getStartX()+l.getEndX())/2,(l.getStartY()+l.getEndY())/2);
         return new Line(rotate(A,P,angle).x,rotate(A,P,angle).y,rotate(B,P,angle).x,rotate(B,P,angle).y);
     }
+    static Line rotate(Line l,Point P,double angle)
+    {
+        //l绕P转angle
+        Point A=new Point(l.getStartX(),l.getStartY());
+        Point B=new Point(l.getEndX(),l.getEndY());
+        return new Line(rotate(A,P,angle).x,rotate(A,P,angle).y,rotate(B,P,angle).x,rotate(B,P,angle).y);
+    }
     static boolean left(double x,double y,Line l)
     {
         //点(x,y)是否在线段l的左边
@@ -178,8 +190,8 @@ public class Geometry
         Point B=new Point(l.getEndX(),l.getEndY());
         if(inEllipse(A,ellipse) != inEllipse(B,ellipse)) return true;
         if(inEllipse(A,ellipse) && inEllipse(B,ellipse)) return false;
-        A.x-=-ellipse.getCenterX();A.y-=ellipse.getCenterY();
-        B.x-=-ellipse.getCenterX();B.y-=ellipse.getCenterY();
+        A.x-=ellipse.getCenterX();A.y-=ellipse.getCenterY();
+        B.x-=ellipse.getCenterX();B.y-=ellipse.getCenterY();
         double a=ellipse.getRadiusX();
         double b=ellipse.getRadiusY();
         if(Math.abs(A.x-B.x)<eps)
