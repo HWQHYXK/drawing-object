@@ -203,17 +203,7 @@ public class PropertyBar extends Pane
                         case "stroke":
                             break;
                         case "rotate":
-                            changeRotate(shape, i, value);
-//                            value.textProperty().addListener((rotate, pre, now) ->
-//                            {
-//                                try
-//                                {
-//                                    shape.setRotate(Double.parseDouble(now));
-//                                }catch (Exception e)
-//                                {
-//                                    new AlertBox("Wrong Input","Error","I Know","Cancel");
-//                                }
-//                            });
+                            changeRotate(shape, i, key, value);
                             break;
                     }
                     break;
@@ -233,7 +223,7 @@ public class PropertyBar extends Pane
                         case "fill":
                             break;
                         case "rotate":
-                            changeRotate(shape, i, value);
+                            changeRotate(shape, i, key, value);
                             break;
                     }
                     break;
@@ -253,14 +243,14 @@ public class PropertyBar extends Pane
                         case "fill":
                             break;
                         case "rotate":
-                            changeRotate(shape, i, value);
+                            changeRotate(shape, i, key, value);
                             break;
                     }
                     break;
             }
         }
     }
-    private void changeRotate(Shape shape,int i, TextField value)
+    private void changeRotate(Shape shape,int i, Label key ,TextField value)
     {
         value.setOnAction(event ->
         {
