@@ -58,9 +58,18 @@ public class Geometry
             if(inPolygon(x1,y1,x2,y2,(Polygon) node)) return true;
 
             List<Double> a=((Polygon)node).getPoints();
-            if(inRange(x1,y1,x2,y2,new Line(a.get(a.size()-1),a.get(a.size()-2),a.get(0),a.get(1)))) return true;
+
+            Point P=new Point(0,0);
+            for(int i=0;i<a.size();i+=2){
+                P.x+=a.get(i);
+                P.y+=a.get(i+1);
+            }
+            P.x/=a.size()/2;
+            P.y/=a.size()/2;
+
+            if(inRange(x1,y1,x2,y2,rotate(new Line(a.get(a.size()-1),a.get(a.size()-2),a.get(0),a.get(1)),P,angle))) return true;
             for(int i=0;i+3<a.size();i+=2)
-                if(inRange(x1,y1,x2,y2,new Line(a.get(i),a.get(i+1),a.get(i+2),a.get(i+3)))) return true;
+                if(inRange(x1,y1,x2,y2,rotate(new Line(a.get(i),a.get(i+1),a.get(i+2),a.get(i+3)),P,angle))) return true;
 
             return false;
         }
