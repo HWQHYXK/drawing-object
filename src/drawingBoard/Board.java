@@ -11,7 +11,12 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Board extends Pane
@@ -22,6 +27,7 @@ public class Board extends Pane
     private GetPos getPos;
     private static Bloom bloom = new Bloom(0.3);
     private final static double RATIO = 0.8;
+    private ArrayList<HashMap<String, String>>objectProperty = new ArrayList<>();
 
     public String getX()
     {
@@ -88,12 +94,6 @@ public class Board extends Pane
     {
         public StringProperty x = new SimpleStringProperty("x: "),y = new SimpleStringProperty("y: ");
         private boolean flag = false;
-
-        public GetPos()
-        {
-//            fa.getMyBottom().getChildren().add(x);
-//            fa.getMyBottom().getChildren().add(y);
-        }
         @Override
         public void handle(MouseEvent event)
         {
@@ -102,15 +102,11 @@ public class Board extends Pane
                 flag = true;
                 x.setValue("x: "+event.getX());
                 y.setValue("y: "+event.getY());
-//                System.out.println("x:"+event.getX());
-//                System.out.println("y:"+event.getY());
             }
             else if(flag&&event.getEventType().equals(MouseEvent.MOUSE_MOVED))
             {
                 x.setValue("x: "+event.getX());
                 y.setValue("y: "+event.getY());
-//                System.out.println("x:"+event.getX());
-//                System.out.println("y:"+event.getY());
             }
             else
             {
@@ -138,6 +134,10 @@ public class Board extends Pane
             if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
         });
         node.setOnMouseDragEntered(event ->
+        {
+            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
+        });
+        node.setOnMouseDragOver(event ->
         {
             if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
         });
