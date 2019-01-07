@@ -28,10 +28,9 @@ public class Geometry
 
             if(Math.abs(x1-x2)<eps || Math.abs(y1-y2)<eps) return false;
 
-            boolean isleft=left((Line)node,new Line(x1,y1,x1,y2));
-            if(isleft != left((Line)node,new Line(x1,y2,x2,y2))) return false;
-            if(isleft != left((Line)node,new Line(x2,y2,x2,y1))) return false;
-            if(isleft != left((Line)node,new Line(x2,y1,x1,y1))) return false;
+            Rectangle rectangle=new Rectangle(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x1-x2),Math.abs(y1-y2));
+            if(!inRectangle(new Point(((Line)node).getStartX(),((Line)node).getStartY()),rectangle)) return false;
+            if(!inRectangle(new Point(((Line)node).getEndX(),((Line)node).getEndY()),rectangle)) return false;
 
             return true;
         }
@@ -91,9 +90,18 @@ public class Geometry
         Point B=new Point(A.x-ellipse.getCenterX(),A.y-ellipse.getCenterY());
         double a=ellipse.getRadiusX();
         double b=ellipse.getRadiusY();
-        double c=Math.sqrt(Math.abs(a*a-b*b));
-        Point F1=new Point(-c,0),F2=new Point(c,0);
-        return dist(B,F1)+dist(B,F2) < a+a;
+        if(a>b)
+        {
+            double c =Math.sqrt(a * a - b * b);
+            Point F1 = new Point(-c, 0), F2 = new Point(c, 0);
+            return dist(B, F1) + dist(B, F2) < a + a;
+        }
+        else
+        {
+            double c =Math.sqrt(b * b - a * a);
+            Point F1 = new Point(0,-c), F2 = new Point(0,c);
+            return dist(B, F1) + dist(B, F2) < b + b;
+        }
     }
     static boolean inEllipse(double x1, double y1, double x2, double y2,Ellipse ellipse)
     {
@@ -161,12 +169,6 @@ public class Geometry
         double x2=x-l.getStartX();
         double y2=y-l.getStartY();
         return x1*y2-x2*y1>0;
-    }
-    static boolean left(Line l1,Line l2)
-    {
-        //线段l1是否在线段l2的左边
-        rotate(l1);rotate(l2);
-        return left(l1.getStartX(),l1.getStartY(),l2) && left(l1.getEndX(),l1.getEndY(),l2);
     }
     static boolean left(Ellipse ellipse,Line l,boolean hasJudge)
     {
