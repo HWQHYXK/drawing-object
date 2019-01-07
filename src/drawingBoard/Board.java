@@ -5,15 +5,10 @@ import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +44,10 @@ public class Board extends Pane
         this.fa=fa;
 //        setStyle("-fx-background-color: radial-gradient(center 50% 50%, radius 50%,  cyan, SkyBlue 75%, LightGreen)");
         setStyle("-fx-background-color: Silver");
+        InnerShadow innerShadow = new InnerShadow();
+        innerShadow.setOffsetX(10.0);
+        innerShadow.setOffsetY(10.0);
+        setEffect(innerShadow);
 //        InnerShadow innerShadow = new InnerShadow();
 //        innerShadow.setOffsetX(1.0);
 //        innerShadow.setOffsetY(1.0);
@@ -131,15 +130,15 @@ public class Board extends Pane
         });
         node.setOnMousePressed(event ->
         {
-            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
+            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
         });
         node.setOnMouseDragEntered(event ->
         {
-            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
+            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
         });
         node.setOnMouseDragOver(event ->
         {
-            if(fa.getMyLeft().getTool() instanceof Eraser)delete(node);
+            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
         });
     }
     public void add(Node node)

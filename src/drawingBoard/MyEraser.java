@@ -1,10 +1,11 @@
 package drawingBoard;
 
+import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
-public class Eraser implements Tool
+public class MyEraser implements Tool
 {
     @Override
     public void press(MouseEvent e, Board pane)
@@ -15,15 +16,12 @@ public class Eraser implements Tool
     @Override
     public void drag(MouseEvent e, Board pane)
     {
-        pane.addEventFilter(MouseEvent.DRAG_DETECTED, event ->
-        {
-            pane.startFullDrag();
-        });
+        pane.addEventFilter(MouseEvent.DRAG_DETECTED, event -> pane.startFullDrag());
     }
 
     @Override
     public void release(MouseEvent e, Board pane)
     {
-        Main.getScene().setCursor(null);
+        Main.getScene().setCursor(Cursor.DEFAULT);
     }
 }
