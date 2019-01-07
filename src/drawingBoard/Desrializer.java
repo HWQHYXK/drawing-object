@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class Desrializer
             line--;
         }
     }
-    protected void add(Group group, Node node)
+    protected void add(Group group, Shape node)
     {
         group.getChildren().add(node);
     }

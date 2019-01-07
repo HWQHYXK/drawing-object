@@ -9,14 +9,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 public class MyChooser implements Tool
 {
     private double originalX,originalY;
     private Rectangle rectangle;
+    private Board pane;
     @Override
     public void press(MouseEvent e, Board pane)
     {
+        this.pane = pane;
         originalX=e.getX();originalY=e.getY();
         rectangle = new Rectangle(originalX,originalY,0,0);
         rectangle.setFill(Color.SKYBLUE);
@@ -53,6 +56,7 @@ public class MyChooser implements Tool
         for(Node node:object.getChildren())
             if(Geometry.inRange(x1,y1,x2,y2,node))
             {
+                pane.fa.getMyRight().changeItem((Shape)node);
                 node.setStyle("-fx-fill:Green;-fx-stroke:Green");
             }
             else

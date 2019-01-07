@@ -9,6 +9,7 @@ import javafx.scene.effect.Bloom;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,9 +114,10 @@ public class Board extends Pane
             }
         }
     }
-    public void load(Node node)
+    public void load(Shape node)
     {
         object.getChildren().add(node);
+        fa.getMyRight().add(node);
         node.setOnMouseEntered(event ->
         {
             node.setStyle("-fx-fill: INDIANRED; -fx-stroke:INDIANRED");
@@ -141,7 +143,7 @@ public class Board extends Pane
             if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
         });
     }
-    public void add(Node node)
+    public void add(Shape node)
     {
         fa.getMyTop().setRecentSave(false);
         node.setLayoutX(-getWidth()/2);
