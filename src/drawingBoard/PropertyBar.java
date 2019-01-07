@@ -11,10 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
@@ -166,6 +163,12 @@ public class PropertyBar extends Pane
             now.put("fill",String.valueOf(rectangle.getFill()));
             now.put("rotate",String.valueOf(rectangle.getRotate()));
         }
+        else if(shape instanceof Polygon)
+        {
+            Polyline polyline = (Polyline) shape;
+            now.put("type","polyline");
+            now.put("rotate",String.valueOf(polyline.getRotate()));
+        }
     }
     public void changeItem(Shape shape)
     {
@@ -247,8 +250,22 @@ public class PropertyBar extends Pane
                             break;
                     }
                     break;
+                case "polyline":
+                    switch (tuple.getKey())
+                    {
+                        case "rotate":
+                            changeRotate(shape, i, key, value);
+                            break;
+                    }
             }
         }
+    }
+    private void changePosition(Shape shape, int i, Label key, TextField value, boolean x)
+    {
+        value.setOnAction(event ->
+        {
+            
+        });
     }
     private void changeRotate(Shape shape,int i, Label key ,TextField value)
     {

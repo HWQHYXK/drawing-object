@@ -21,7 +21,7 @@ public class ToolBar extends VBox
     MainPane fa;
     private Color nowColor;
     private ColorPicker colorPicker;
-    private Tool nowTool,myLine,myCircle,myRectangle,myPolygon,myEraser,myChooser;
+    private Tool nowTool,myLine,myCircle,myRectangle, myPolyline,myEraser,myChooser;
     private Button line,circle,rectangle,polygon,eraser,chooser;
     private ArrayList<Tool> allTool=new ArrayList<Tool>();
     private ChangeCursor changeCursor;
@@ -72,8 +72,8 @@ public class ToolBar extends VBox
         rectangle = new Button("Rec", imageView);
         getChildren().add(rectangle);
 
-        myPolygon = new MyPolygon();
-        this.add(myPolygon);
+        myPolyline = new MyPolyline();
+        this.add(myPolyline);
         imageView = new ImageView("image/rectangle.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
@@ -127,7 +127,7 @@ public class ToolBar extends VBox
         });
         polygon.setOnAction(event ->
         {
-            switchh(myPolygon);
+            switchh(myPolyline);
             changeCursor.future = Cursor.CROSSHAIR;
         });
         eraser.setOnAction(event ->
