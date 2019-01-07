@@ -22,9 +22,9 @@ public class MyPolyline implements Tool
         if(currentPolyline.getPoints().isEmpty())
         {
             pane.add(currentPolyline);
-            currentPolyline.getPoints().addAll(e.getX(), e.getY());
+            currentPolyline.getPoints().addAll(e.getX()-pane.getWidth()/2, e.getY()-pane.getHeight()/2);
         }
-        currentPolyline.getPoints().addAll(e.getX(),e.getY());
+        currentPolyline.getPoints().addAll(e.getX()-pane.getWidth()/2, e.getY()-pane.getHeight()/2);
     }
 
     @Override
@@ -33,13 +33,13 @@ public class MyPolyline implements Tool
         if(e.getButton().equals(MouseButton.SECONDARY)) return;
         currentPolyline.getPoints().remove(currentPolyline.getPoints().size()-1);
         currentPolyline.getPoints().remove(currentPolyline.getPoints().size()-1);
-        currentPolyline.getPoints().addAll(e.getX(),e.getY());
+        currentPolyline.getPoints().addAll(e.getX()-pane.getWidth()/2, e.getY()-pane.getHeight()/2);
     }
 
     @Override
     public void release(MouseEvent e, Board pane)
     {
         if(e.getButton().equals(MouseButton.SECONDARY)) return;
-        currentPolyline.getPoints().addAll(e.getX(),e.getY());
+        currentPolyline.getPoints().addAll(e.getX()-pane.getWidth()/2, e.getY()-pane.getHeight()/2);
     }
 }

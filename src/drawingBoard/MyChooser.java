@@ -42,12 +42,12 @@ public class MyChooser implements Tool
             rectangle.setX(Math.min(originalX,e.getX()));
             rectangle.setY(Math.min(originalY,e.getY()));
         }
-        choose(originalX,originalY,e.getX(),e.getY(),pane.getObject());
+        choose(originalX-pane.getWidth()/2,originalY-pane.getHeight()/2,e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2,pane.getObject());
     }
     @Override
     public void release(MouseEvent e, Board pane)
     {
-        choose(originalX,originalY,e.getX(),e.getY(),pane.getObject());
+        choose(originalX-pane.getWidth()/2,originalY-pane.getHeight()/2,e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2,pane.getObject());
         pane.getChildren().remove(rectangle);
         Main.getScene().setCursor(Cursor.DEFAULT);
     }

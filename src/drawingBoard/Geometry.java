@@ -5,7 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Polyline;
 
 import java.util.List;
 
@@ -53,11 +53,11 @@ public class Geometry
 
             return false;
         }
-        else if(node instanceof Polygon)
+        else if(node instanceof Polyline)
         {
-            if(inPolygon(x1,y1,x2,y2,(Polygon) node)) return true;
+            if(inPolyline(x1,y1,x2,y2,(Polyline) node)) return true;
 
-            List<Double> a=((Polygon)node).getPoints();
+            List<Double> a=((Polyline)node).getPoints();
             if(inRange(x1,y1,x2,y2,new Line(a.get(a.size()-1),a.get(a.size()-2),a.get(0),a.get(1)))) return true;
             for(int i=0;i+3<a.size();i+=2)
                 if(inRange(x1,y1,x2,y2,new Line(a.get(i),a.get(i+1),a.get(i+2),a.get(i+3)))) return true;
@@ -146,10 +146,10 @@ public class Geometry
         if(!inRectangle(new Point(x2,y2),rectangle)) return false;
         return true;
     }
-    static boolean inPolygon(Point A,Polygon polygon)
+    static boolean inPolyline(Point A,Polyline polyline)
     {
-        //点A是否在多边形polygon中
-        List<Double> a=polygon.getPoints();
+        //点A是否在多边形polyline中
+        List<Double> a=polyline.getPoints();
         boolean isleft=left(A.x,A.y,new Line(a.get(a.size()-2),a.get(a.size()-1),a.get(0),a.get(1)));
         for(int i=0;i+3<a.size();i+=2)
             if(isleft != left(A.x,A.y,new Line(a.get(i),a.get(i+1),a.get(i+2),a.get(i+3))))
@@ -157,12 +157,12 @@ public class Geometry
 
         return true;
     }
-    static boolean inPolygon(double x1, double y1, double x2, double y2,Polygon polygon)
+    static boolean inPolyline(double x1, double y1, double x2, double y2,Polyline polyline)
     {
-        if(!inPolygon(new Point(x1,y1),polygon)) return false;
-        if(!inPolygon(new Point(x1,y2),polygon)) return false;
-        if(!inPolygon(new Point(x2,y1),polygon)) return false;
-        if(!inPolygon(new Point(x2,y2),polygon)) return false;
+        if(!inPolyline(new Point(x1,y1),polyline)) return false;
+        if(!inPolyline(new Point(x1,y2),polyline)) return false;
+        if(!inPolyline(new Point(x2,y1),polyline)) return false;
+        if(!inPolyline(new Point(x2,y2),polyline)) return false;
         return true;
     }
     static Point rotate(Point A,Point B,double angle)

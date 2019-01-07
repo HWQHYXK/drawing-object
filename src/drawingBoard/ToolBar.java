@@ -89,6 +89,7 @@ public class ToolBar extends VBox
         getChildren().add(eraser);
 
         colorPicker = new ColorPicker();
+        colorPicker.setValue(Color.BLACK);
         getChildren().add(colorPicker);
         colorPicker.setOnAction(event -> nowColor = colorPicker.getValue());
 

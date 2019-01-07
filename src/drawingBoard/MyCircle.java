@@ -11,7 +11,7 @@ public class MyCircle implements Tool
     @Override
     public void press(MouseEvent e, Board pane)
     {
-        currentEllipse=new Ellipse(e.getX(),e.getY(),0,0);
+        currentEllipse=new Ellipse(e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2,0,0);
         currentEllipse.setFill(pane.fa.getMyLeft().getColor());
         leftx=e.getX();lefty=e.getY();
         pane.add(currentEllipse);
@@ -23,16 +23,14 @@ public class MyCircle implements Tool
         {
             currentEllipse.setRadiusX(Math.max(Math.abs(e.getX()-leftx)/2,Math.abs(e.getY()-lefty)/2));
             currentEllipse.setRadiusY(Math.max(Math.abs(e.getX()-leftx)/2,Math.abs(e.getY()-lefty)/2));
-            currentEllipse.setCenterX((e.getX()+leftx)/2);
-            currentEllipse.setCenterY((e.getY()+lefty)/2);
         }
         else
         {
             currentEllipse.setRadiusX(Math.abs(e.getX()-leftx)/2);
             currentEllipse.setRadiusY(Math.abs(e.getY()-lefty)/2);
-            currentEllipse.setCenterX((e.getX()+leftx)/2);
-            currentEllipse.setCenterY((e.getY()+lefty)/2);
         }
+        currentEllipse.setCenterX((e.getX()+leftx)/2-pane.getWidth()/2);
+        currentEllipse.setCenterY((e.getY()+lefty)/2-pane.getHeight()/2);
     }
     @Override
     public void release(MouseEvent e, Board pane)

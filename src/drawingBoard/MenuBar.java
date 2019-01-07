@@ -165,10 +165,10 @@ public class MenuBar extends javafx.scene.control.MenuBar
                 bo.write("Line:");
                 bo.newLine();
                 bo.write("    start:");
-                bo.write("("+(line.getStartX()+line.getLayoutX())+","+(line.getStartY()+line.getLayoutY())+")");
+                bo.write("("+(line.getStartX())+","+(line.getStartY())+")");
                 bo.newLine();
                 bo.write("    end:");
-                bo.write("("+(line.getEndX()+line.getLayoutX())+","+(line.getEndY()+line.getLayoutY())+")");
+                bo.write("("+(line.getEndX())+","+(line.getEndY())+")");
                 bo.newLine();
                 bo.write("    color:");
                 bo.write(line.getStroke().toString());
@@ -180,7 +180,7 @@ public class MenuBar extends javafx.scene.control.MenuBar
                 bo.write("Ellipse:");
                 bo.newLine();
                 bo.write("    center:");
-                bo.write("("+(ellipse.getCenterX()+ellipse.getLayoutX())+","+(ellipse.getCenterY()+ellipse.getLayoutY())+")");
+                bo.write("("+(ellipse.getCenterX())+","+(ellipse.getCenterY())+")");
                 bo.newLine();
                 bo.write("    a:");
                 bo.write(String.valueOf(ellipse.getRadiusX()));
@@ -201,7 +201,7 @@ public class MenuBar extends javafx.scene.control.MenuBar
                 bo.write("Rectangle:");
                 bo.newLine();
                 bo.write("    start:");
-                bo.write("("+(rectangle.getX()+rectangle.getLayoutX())+","+(rectangle.getY()+rectangle.getLayoutY())+")");
+                bo.write("("+(rectangle.getX())+","+(rectangle.getY())+")");
                 bo.newLine();
                 bo.write("    end:");
                 bo.write("("+(rectangle.getLayoutX()+rectangle.getX()+rectangle.getWidth())+","+(rectangle.getLayoutY()+rectangle.getY()+rectangle.getHeight())+")");

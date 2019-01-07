@@ -14,15 +14,15 @@ public class MyLine extends Line implements Tool, Serializable
     @Override
     public void press(MouseEvent e,Board pane)
     {
-        currentLine=new Line(e.getX(),e.getY(),e.getX(),e.getY());
+        currentLine=new Line(e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2,e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2);
         currentLine.setStroke(pane.fa.getMyLeft().getColor());
         pane.add(currentLine);
     }
     @Override
     public void drag(MouseEvent e,Board pane)
     {
-        currentLine.setEndX(e.getX());
-        currentLine.setEndY(e.getY());
+        currentLine.setEndX(e.getX()-pane.getWidth()/2);
+        currentLine.setEndY(e.getY()-pane.getHeight()/2);
     }
     @Override
     public void release(MouseEvent e, Board pane)

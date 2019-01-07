@@ -146,8 +146,6 @@ public class Board extends Pane
     public void add(Shape node)
     {
         fa.getMyTop().setRecentSave(false);
-        node.setLayoutX(-getWidth()/2);
-        node.setLayoutY(-getHeight()/2);
         load(node);
     }
     public void delete(Node node)
