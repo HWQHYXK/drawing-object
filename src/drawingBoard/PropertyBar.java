@@ -1,9 +1,6 @@
 package drawingBoard;
 
-import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -16,7 +13,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 
@@ -25,11 +21,17 @@ public class PropertyBar extends Pane
     MainPane fa;
     private Label name = new Label("Background");
     private ArrayList<ArrayList<Property>> objectProperty = new ArrayList<>();
-//    private ArrayList<TreeMap<String,String>>objectProperty = new ArrayList<>();
+
+    public ArrayList<ArrayList<Property>> getObjectProperty()
+    {
+        return objectProperty;
+    }
+
+    //    private ArrayList<TreeMap<String,String>>objectProperty = new ArrayList<>();
     public PropertyBar(MainPane fa)
     {
 //        prefWidthProperty().bind(fa.widthProperty().divide(7));
-        setPrefWidth(300);
+        setPrefWidth(250);
         this.fa=fa;
         setStyle("-fx-background-color: linear-gradient(to top, SkyBlue, RoyalBlue, SkyBlue);");
         Light.Point light = new Light.Point();
@@ -183,7 +185,20 @@ public class PropertyBar extends Pane
             now.add(polyline.fillProperty());
             now.add(polyline.rotateProperty());
         }
-    }public void changeItem(Shape shape)
+    }
+    public void delete(Shape shape)
+    {
+        delete(fa.getMyCenter().getObject().getChildren().indexOf(shape));
+    }
+    private void delete(int i)
+    {
+        objectProperty.remove(i);
+    }
+    public void clear()
+    {
+        objectProperty.clear();
+    }
+    public void changeItem(Shape shape)
     {
         if(shape instanceof Line)setName("Line");
         else if(shape instanceof Ellipse)setName("Ellipse");
@@ -191,7 +206,7 @@ public class PropertyBar extends Pane
         else if(shape instanceof Polyline)setName("Polyline");
         changeItem(fa.getMyCenter().getObject().getChildren().indexOf(shape));
     }
-    public void changeItem(int i)
+    private void changeItem(int i)
     {
         getChildren().remove(1,getChildren().size());
         double y = name.getLayoutY()+40;

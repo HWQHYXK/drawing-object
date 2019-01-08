@@ -11,9 +11,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 
 public class Board extends Pane
 {
@@ -23,7 +20,6 @@ public class Board extends Pane
     private GetPos getPos;
     private static Bloom bloom = new Bloom(0.3);
     private final static double RATIO = 0.8;
-    private ArrayList<HashMap<String, String>>objectProperty = new ArrayList<>();
 
     public String getX()
     {
@@ -148,12 +144,14 @@ public class Board extends Pane
         fa.getMyTop().setRecentSave(false);
         load(node);
     }
-    public void delete(Node node)
+    public void delete(Shape node)
     {
+        fa.getMyRight().delete(node);
         object.getChildren().remove(node);
     }
     public void clear()
     {
+        fa.getMyRight().clear();
         object.getChildren().clear();
     }
 }
