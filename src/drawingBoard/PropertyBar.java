@@ -446,7 +446,7 @@ public class PropertyBar extends Pane
 //                objectProperty.get(i).replace(property.getName(),value.getText());
 //            }catch (Exception e)
 //            {
-//                new AlertBox("Wrong Input","Error","I Know","Cancel");
+//                new AlertBox.md("Wrong Input","Error","I Know","Cancel");
 //            }
 //            name.requestFocus();
 //        });
@@ -460,7 +460,7 @@ public class PropertyBar extends Pane
 //                    objectProperty.get(i).replace(property.getName(),value.getText());
 //                }catch (Exception e)
 //                {
-//                    new AlertBox("Wrong Input","Error","I Know","Cancel");
+//                    new AlertBox.md("Wrong Input","Error","I Know","Cancel");
 //                }
 //            }
 //        });

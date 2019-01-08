@@ -21,16 +21,6 @@ public class Board extends Pane
     private static Bloom bloom = new Bloom(0.3);
     private final static double RATIO = 0.8;
 
-    public String getX()
-    {
-        return x.get();
-    }
-
-    public String getY()
-    {
-        return y.get();
-    }
-
     public GetPos getGetPos()
     {
         return getPos;
