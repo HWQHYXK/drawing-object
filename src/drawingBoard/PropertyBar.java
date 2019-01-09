@@ -3,11 +3,13 @@ package drawingBoard;
 import javafx.beans.property.*;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,7 +23,6 @@ public class PropertyBar extends Pane
     MainPane fa;
     private Label name = new Label("Background");
     private ArrayList<ArrayList<Property>> objectProperty = new ArrayList<>();
-
     public ArrayList<ArrayList<Property>> getObjectProperty()
     {
         return objectProperty;
@@ -125,6 +126,11 @@ public class PropertyBar extends Pane
     {
         this.name.setText(name);
     }
+    public void update(Shape shape)
+    {
+        delete(shape);
+        add(shape);
+    }
     public void add(Shape shape)
     {
         add(shape, fa.getMyCenter().getObject().getChildren().indexOf(shape));
@@ -174,10 +180,20 @@ public class PropertyBar extends Pane
         else if(shape instanceof Polyline)
         {
             Polyline polyline = (Polyline) shape;
+            PointsProperty last = new PointsProperty();
             for(int i = 0; i<polyline.getPoints().size();i+=2)
             {
-                now.add(new SimpleDoubleProperty(polyline.getPoints().get(i)));
-                now.add(new SimpleDoubleProperty(polyline.getPoints().get(i+1)));
+                PointsProperty x,y;
+                now.add(x = new PointsProperty(polyline, "x", i));
+                now.add(y = new PointsProperty(polyline, "y", i+1));
+                x.setPair(y);
+                y.setPair(x);
+                x.setNext(y);
+                if(last.getIndex() != -1)
+                {
+                    last.setNext(x);
+                }
+                last = y;
             }
             now.add(shape.layoutXProperty());
             now.add(shape.layoutYProperty());
@@ -188,7 +204,11 @@ public class PropertyBar extends Pane
     }
     public void delete(Shape shape)
     {
-        delete(fa.getMyCenter().getObject().getChildren().indexOf(shape));
+        int i = fa.getMyCenter().getObject().getChildren().indexOf(shape);
+        if(i != -1)
+        {
+            delete(fa.getMyCenter().getObject().getChildren().indexOf(shape));
+        }
     }
     private void delete(int i)
     {
@@ -204,9 +224,9 @@ public class PropertyBar extends Pane
         else if(shape instanceof Ellipse)setName("Ellipse");
         else if(shape instanceof Rectangle)setName("Rectangle");
         else if(shape instanceof Polyline)setName("Polyline");
-        changeItem(fa.getMyCenter().getObject().getChildren().indexOf(shape));
+        changeItem(shape, fa.getMyCenter().getObject().getChildren().indexOf(shape));
     }
-    private void changeItem(int i)
+    private void changeItem(Shape shape, int i)
     {
         getChildren().remove(1,getChildren().size());
         double y = name.getLayoutY()+40;
@@ -214,6 +234,10 @@ public class PropertyBar extends Pane
         {
             Label key = new Label(property.getName());
             TextField value = new TextField(property.getValue() != null?property.getValue().toString():"");
+            property.addListener((val, pre, now)->
+            {
+                value.setText(property.getValue() != null?property.getValue().toString():"");
+            });
             key.setLayoutY(y+=40);
             value.setLayoutY(y);
             key.setLayoutX(5);
@@ -222,24 +246,58 @@ public class PropertyBar extends Pane
             getChildren().addAll(key, value);
 
             value.setOnAction(event -> change(value,property));
+            if(property instanceof PointsProperty)
+            {
+                if(((PointsProperty)property).getIndex()%2 == 0)
+                {
+                    Button button = new Button("x");
+                    button.setStyle("-fx-text-fill: Red");
+                    ((PointsProperty) property).setTextField(value);
+                    button.setOnAction(event ->
+                    {
+                        objectProperty.get(i).remove(property);
+                        objectProperty.get(i).remove(((PointsProperty) property).getPair());
+                        ((PointsProperty) property).update();
+                        ((PointsProperty) property).getPair().update();
+                        value.disableProperty().set(true);
+                        button.setDisable(true);
+                        ((Polyline)shape).getPoints().remove(((PointsProperty)property).getIndex()+1);
+                        ((Polyline)shape).getPoints().remove(((PointsProperty)property).getIndex());
+                        if(((Polyline)shape).getPoints().isEmpty())
+                        {
+                            fa.getMyCenter().delete(shape);
+                        }
+                    });
+                    button.setLayoutX(value.getLayoutX()+value.getPrefWidth());
+                    button.setLayoutY(y);
+                    getChildren().add(button);
+                }
+                else
+                {
+                    value.disableProperty().bind(((PointsProperty)property).getPair().getTextField().disabledProperty());
+                }
+            }
         }
     }
     private void change(TextField value, Property property)
     {
-        value.setOnAction(event ->
+        value.setOnKeyPressed(event ->
         {
-            try
+            if(event.getCode().equals(KeyCode.ENTER))
             {
-                if(property instanceof DoubleProperty)property.setValue(Double.parseDouble(value.getText()));
-                else if(property.getName().equals("fill")||property.getName().equals("stroke"))
+                try
                 {
-                    property.setValue(Color.valueOf(value.getText()));
+                    if (property instanceof DoubleProperty) property.setValue(Double.parseDouble(value.getText()));
+                    else if (property.getName().equals("fill") || property.getName().equals("stroke"))
+                    {
+                        property.setValue(Color.valueOf(value.getText()));
+                    }
+                } catch (Exception e)
+                {
+                    new AlertBox("Wrong Input", "Error", "I Know", "Cancel");
                 }
-            }catch (Exception e)
-            {
-                new AlertBox("Wrong Input","Error","I Know","Cancel");
+                name.requestFocus();
             }
-            name.requestFocus();
         });
         value.focusedProperty().addListener((focused, pre, now) ->
         {
@@ -258,6 +316,71 @@ public class PropertyBar extends Pane
                 }
             }
         });
+    }
+    private class PointsProperty extends SimpleDoubleProperty
+    {
+        private String name;
+        private int index = -1;
+        private PointsProperty pair,next;
+        private TextField textField;
+
+        public void setTextField(TextField textField)
+        {
+            this.textField = textField;
+        }
+
+        public TextField getTextField()
+        {
+            return textField;
+        }
+
+        public int getIndex()
+        {
+            return index;
+        }
+
+        public void setNext(PointsProperty next)
+        {
+            this.next = next;
+        }
+
+        public void update()
+        {
+            if(next != null)
+            {
+                next.index--;
+                next.update();
+            }
+        }
+
+        public PointsProperty getPair()
+        {
+            return pair;
+        }
+
+        public void setPair(PointsProperty pair)
+        {
+            this.pair = pair;
+        }
+        public PointsProperty()
+        {
+
+        }
+        public PointsProperty(Polyline polyline, String name, int index)
+        {
+            super(polyline.getPoints().get(index));
+            this.name = name;
+            this.index = index;
+            addListener((number, pre, now) ->
+            {
+                polyline.getPoints().set(index, (Double)now);
+            });
+        }
+        @Override
+        public String getName()
+        {
+            return name;
+        }
     }
 //    private class PositionProperty extends ObjectProperty<Pair<Double,Double>>
 //    {

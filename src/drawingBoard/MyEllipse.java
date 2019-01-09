@@ -4,7 +4,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
-public class MyCircle implements Tool
+public class MyEllipse implements Tool
 {
     private double leftx,lefty;
     private Ellipse currentEllipse = new Ellipse();

@@ -16,6 +16,7 @@ public class MyPolyline implements Tool
 
             currentPolyline.getPoints().addAll(currentPolyline.getPoints().get(0), currentPolyline.getPoints().get(1));
             currentPolyline.setFill(pane.fa.getMyLeft().getColor());
+            pane.fa.getMyRight().update(currentPolyline);
             currentPolyline =new Polyline();
             return;
         }
@@ -39,7 +40,6 @@ public class MyPolyline implements Tool
     @Override
     public void release(MouseEvent e, Board pane)
     {
-        if(e.getButton().equals(MouseButton.SECONDARY)) return;
-        currentPolyline.getPoints().addAll(e.getX()-pane.getWidth()/2, e.getY()-pane.getHeight()/2);
+
     }
 }

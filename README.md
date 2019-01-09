@@ -1,4 +1,4 @@
-# Drawing Object's Documents Catalogue
+# Drawing Object
 > ***To create a simple way to design a shape***
   
 * [项目结构](docs/project_structure.md)
@@ -9,17 +9,17 @@
 * [主面板](docs/MainPane.md)
     * [Top](docs/MenuBar.md)
     * [Left](docs/ToolBar.md)
-    * [Right]()
+    * [Right](docs/PropertyBar.md)
     * [Bottom](docs/Cue.md)
     * [Center](docs/Board.md)
 ----
-* [工具]()
-    * [选择]()
-    * [线段]()
-    * [椭圆]()
-    * [矩形]()
-    * [多边形]()
-    * [橡皮]()
+* [工具](docs/Tool.md)
+    * [选择](docs/MyChooser.md)
+    * [线段](docs/MyLine.md)
+    * [椭圆](docs/MyEllipse.md)
+    * [矩形](docs/MyRectangle.md)
+    * [多边形](docs/MyPolyline.md)
+    * [橡皮](docs/MyEraser.md)
 ----
 * [几何运算类]()
 ----
