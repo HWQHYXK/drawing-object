@@ -54,6 +54,7 @@ public class MyChooser implements Tool
     private void choose(double x1,double y1,double x2,double y2,Group object)
     {
         for(Node node:object.getChildren())
+        {
             if(Geometry.inRange(x1,y1,x2,y2,node))
             {
                 pane.fa.getMyRight().changeItem((Shape)node);
@@ -61,5 +62,6 @@ public class MyChooser implements Tool
             }
             else
                 node.setStyle(null);
+        }
     }
 }
