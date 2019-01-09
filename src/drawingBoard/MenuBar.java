@@ -1,5 +1,7 @@
 package drawingBoard;
 
+import gsdl.Desrializer;
+import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -7,16 +9,13 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.effect.Light;
-import javafx.scene.effect.Lighting;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MenuBar extends javafx.scene.control.MenuBar
 {
@@ -71,14 +70,15 @@ public class MenuBar extends javafx.scene.control.MenuBar
             }finally
             {
                 fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Geometry Shape Description Language(*.gsdl)","*.gsdl"),
-                        new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"));
+                        new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"),
+                        new FileChooser.ExtensionFilter("All(*.*)", "*.*"));
                 File file = fileChooser.showOpenDialog(Main.getStage());
                 try
                 {
                     if(file!=null)
                     {
                         LittleDesrailizer desrializer = new LittleDesrailizer(file);
-                        desrializer.assign(fa.getMyCenter().getObject());
+                        desrializer.setObject(fa.getMyCenter().getObject());
                     }
                 }catch (IOException e)
                 {
@@ -89,32 +89,67 @@ public class MenuBar extends javafx.scene.control.MenuBar
         });
         saveMenuItem.setOnAction(event ->
         {
+            exportMenuItem.getOnAction().handle(event);
+//            try
+//            {
+//                FileChooser fileChooser = new FileChooser();
+//                try
+//                {
+//                    fileChooser.setInitialDirectory(new File("./"));
+//                }finally
+//                {
+//                    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Geometry Shape Description Language(*.gsdl)","*.gsdl"),
+//                            new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"),
+//                            new FileChooser.ExtensionFilter("All(*.*)", "*.*"));
+//                    File file = fileChooser.showSaveDialog(Main.getStage());
+//                    if(file!=null)
+//                    {
+//                        translate(file);
+//                        recentSave = true;
+//                    }
+//                }
+//            }catch (IOException e)
+//            {
+//                AlertBox alertBox = new AlertBox("IOException", "Error", "Retry", "Cancel");
+//                if(alertBox.getMode() == 1)saveMenuItem.getOnAction().handle(event);
+//            }
+        });
+        exportMenuItem.setOnAction(event ->
+        {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File("./"));
             try
             {
-                FileChooser fileChooser = new FileChooser();
-                try
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Geometry Shape Description Language(*.gsdl)","*.gsdl"),
+                    new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"),
+                    new FileChooser.ExtensionFilter("All(*.*)", "*.*"));
+                File file = fileChooser.showSaveDialog(Main.getStage());
+                if(file != null)
                 {
-                    fileChooser.setInitialDirectory(new File("./"));
-                }finally
-                {
-                    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Geometry Shape Description Language(*.gsdl)","*.gsdl"),
-                            new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"));
-                    File file = fileChooser.showSaveDialog(Main.getStage());
-                    if(file!=null)
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                    Pattern pattern = Pattern.compile("shape\\.([a-zA-Z]+)");
+                    for(ArrayList<Property> arrayList: fa.getMyRight().getObjectProperty())
                     {
-                        translate(file);
-                        recentSave = true;
+                        Matcher matcher = pattern.matcher(fa.getMyCenter().getObject().getChildren().get(fa.getMyRight().getObjectProperty().indexOf(arrayList)).getClass().toString());
+                        if(matcher.find())
+                        {
+                            writer.write(matcher.group(1));
+                            writer.newLine();
+                        }
+                        for(Property property:arrayList)
+                        {
+                            writer.write("  "+property.getName()+":"+property.getValue());
+                            writer.newLine();
+                        }
+                        writer.flush();
                     }
+                    recentSave = true;
                 }
             }catch (IOException e)
             {
                 AlertBox alertBox = new AlertBox("IOException", "Error", "Retry", "Cancel");
                 if(alertBox.getMode() == 1)saveMenuItem.getOnAction().handle(event);
             }
-        });
-        exportMenuItem.setOnAction(event ->
-        {
-
         });
         exitMenuItem.setOnAction(event ->
         {
@@ -139,9 +174,13 @@ public class MenuBar extends javafx.scene.control.MenuBar
             super(file);
         }
         @Override
-        protected void add(Group group, Shape node)
+        protected void add(Shape node)
         {
             fa.getMyCenter().load(node);
+            if(node instanceof Polyline)
+            {
+                fa.getMyRight().update(node);
+            }
         }
     }
     private int checkSave()
