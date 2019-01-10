@@ -14,7 +14,7 @@ public class Test extends Application
     public void start(Stage primaryStage) throws IOException
     {
         File file = new File("testingFile/timeline.gsdl");
-        TimelineDesrializer desrializer = new TimelineDesrializer(file);
+        TimelineDeserializer desrializer = new TimelineDeserializer(file);
         BorderPane pane = new BorderPane(desrializer.getObject());
         Scene scene = new Scene(pane,500,500);
         primaryStage.setScene(scene);

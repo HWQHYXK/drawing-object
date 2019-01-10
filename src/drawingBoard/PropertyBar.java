@@ -1,7 +1,9 @@
 package drawingBoard;
 
 import javafx.beans.property.*;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +12,7 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,12 +20,17 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeMap;
 
 public class PropertyBar extends Pane
 {
     MainPane fa;
-    private Label name = new Label("Background");
+    private Label name = new Label("Hello");
     private ArrayList<ArrayList<Property>> objectProperty = new ArrayList<>();
+    private HashSet<Shape> selected = new HashSet<>();
+    private Shape nowShape;
     public ArrayList<ArrayList<Property>> getObjectProperty()
     {
         return objectProperty;
@@ -150,6 +158,25 @@ public class PropertyBar extends Pane
             now.add(line.endYProperty());
             now.add(line.strokeProperty());
             now.add(line.rotateProperty());
+            now.add(line.strokeWidthProperty());
+        }
+        else if(shape instanceof CubicCurve)
+        {
+            CubicCurve curve = (CubicCurve)shape;
+            now.add(shape.layoutXProperty());
+            now.add(shape.layoutYProperty());
+            now.add(curve.startXProperty());
+            now.add(curve.startYProperty());
+            now.add(curve.endXProperty());
+            now.add(curve.endYProperty());
+            now.add(curve.controlX1Property());
+            now.add(curve.controlY1Property());
+            now.add(curve.controlX2Property());
+            now.add(curve.controlY2Property());
+            now.add(curve.strokeProperty());
+            now.add(curve.fillProperty());
+            now.add(curve.rotateProperty());
+            now.add(curve.strokeWidthProperty());
         }
         else if(shape instanceof Ellipse)
         {
@@ -163,6 +190,7 @@ public class PropertyBar extends Pane
             now.add(ellipse.strokeProperty());
             now.add(ellipse.fillProperty());
             now.add(ellipse.rotateProperty());
+            now.add(ellipse.strokeWidthProperty());
         }
         else if(shape instanceof Rectangle)
         {
@@ -176,6 +204,7 @@ public class PropertyBar extends Pane
             now.add(rectangle.strokeProperty());
             now.add(rectangle.fillProperty());
             now.add(rectangle.rotateProperty());
+            now.add(rectangle.strokeWidthProperty());
         }
         else if(shape instanceof Polyline)
         {
@@ -184,8 +213,8 @@ public class PropertyBar extends Pane
             for(int i = 0; i<polyline.getPoints().size();i+=2)
             {
                 PointsProperty x,y;
-                now.add(x = new PointsProperty(polyline, "x", i));
-                now.add(y = new PointsProperty(polyline, "y", i+1));
+                now.add(x = new PointsProperty(polyline, "x"+i/2, i));
+                now.add(y = new PointsProperty(polyline, "y"+i/2, i+1));
                 x.setPair(y);
                 y.setPair(x);
                 x.setNext(y);
@@ -200,6 +229,7 @@ public class PropertyBar extends Pane
             now.add(polyline.strokeProperty());
             now.add(polyline.fillProperty());
             now.add(polyline.rotateProperty());
+            now.add(polyline.strokeWidthProperty());
         }
     }
     public void delete(Shape shape)
@@ -218,9 +248,98 @@ public class PropertyBar extends Pane
     {
         objectProperty.clear();
     }
+    public void addSelected(Shape shape)
+    {
+        selected.add(shape);
+        if(selected.size() == 1)nowShape = shape;
+        else nowShape = null;
+    }
+    public void deleteSelected(Shape shape)
+    {
+        selected.remove(shape);
+    }
+    private TreeMap<String, ArrayList<Property>> check()
+    {
+//        if(selected.size() == 1)
+//        {
+//            changeItem((Shape) fa.getMyCenter().getObject().getChildren().get(selected.get(0)));
+//        }
+//        else
+//        {
+            TreeMap<String, ArrayList<Property>> temp = new TreeMap<>();
+            for(Shape shape:selected)
+            {
+                int index = fa.getMyCenter().getObject().getChildren().indexOf(shape);
+                if(temp.size()!=0)
+                {
+                    for(Property property:objectProperty.get(index))//当前各个属性
+                    {
+                        if(temp.containsKey(property.getName()))
+                        {
+                            temp.get(property.getName()).add(property);
+                        }
+                    }
+                }
+                else
+                {
+                    for(Property property:objectProperty.get(index))
+                    {
+                        temp.put(property.getName(),new ArrayList<>());
+                        temp.get(property.getName()).add(property);
+                    }
+                }
+            }
+            ArrayList<String> removeList = new ArrayList<>();
+           for(String name:temp.keySet())
+            {
+                if(temp.get(name).size() < selected.size())
+                {
+                    removeList.add(name);
+                }
+            }
+           for(String name: removeList)
+           {
+               temp.remove(name);
+           }
+//        }
+        return temp;
+    }
+    public void change()
+    {
+        if(selected.size() == 0)
+        {
+            setName("");
+            getChildren().remove(1,getChildren().size());
+        }
+        if(selected.size() == 1)
+            changeItem(nowShape);
+        else if(selected.size() > 1)
+            changeGroup();
+    }
+    private void changeGroup()
+    {
+        setName("Group");
+        TreeMap<String,ArrayList<Property>> treeMap = check();
+        getChildren().remove(1, getChildren().size());
+        double y = name.getLayoutY() + 40;
+        for(String key:treeMap.keySet())
+        {
+            Label lKey = new Label(key);
+            TextField tValue = new TextField("");
+            lKey.setLayoutY(y+=40);
+            tValue.setLayoutY(y);
+            lKey.setLayoutX(5);
+            tValue.setLayoutX(getWidth()*2/5);
+            tValue.prefWidthProperty().bind(widthProperty().divide(2));
+            getChildren().addAll(lKey, tValue);
+
+            changeValue(tValue, treeMap.get(key));
+        }
+    }
     public void changeItem(Shape shape)
     {
         if(shape instanceof Line)setName("Line");
+        else if(shape instanceof CubicCurve)setName("Curve");
         else if(shape instanceof Ellipse)setName("Ellipse");
         else if(shape instanceof Rectangle)setName("Rectangle");
         else if(shape instanceof Polyline)setName("Polyline");
@@ -245,7 +364,7 @@ public class PropertyBar extends Pane
             value.prefWidthProperty().bind(widthProperty().divide(2));
             getChildren().addAll(key, value);
 
-            value.setOnAction(event -> change(value,property));
+            changeValue(value,property);
             if(property instanceof PointsProperty)
             {
                 if(((PointsProperty)property).getIndex()%2 == 0)
@@ -279,40 +398,66 @@ public class PropertyBar extends Pane
             }
         }
     }
-    private void change(TextField value, Property property)
+    private void changeValue(TextField value, ArrayList<Property> properties)
     {
-        value.setOnKeyPressed(event ->
+        for(Property property:properties)
+            changeValue(value, property);
+    }
+    private void changeValue(TextField value, Property property)
+    {
+        value.addEventHandler(KeyEvent.KEY_PRESSED, event ->
         {
             if(event.getCode().equals(KeyCode.ENTER))
             {
                 try
                 {
-                    if (property instanceof DoubleProperty) property.setValue(Double.parseDouble(value.getText()));
-                    else if (property.getName().equals("fill") || property.getName().equals("stroke"))
+                    if (property instanceof DoubleProperty && !value.getText().equals("")) property.setValue(Double.parseDouble(value.getText()));
+                    else if (!value.getText().equals("") && (property.getName().equals("fill") || property.getName().equals("stroke")))
                     {
                         property.setValue(Color.valueOf(value.getText()));
                     }
                 } catch (Exception e)
                 {
                     new AlertBox("Wrong Input", "Error", "I Know", "Cancel");
+                    value.setText(property.getValue() != null?property.getValue().toString():"");
                 }
                 name.requestFocus();
             }
         });
+//        value.setOnKeyPressed(event ->
+//        {
+//            if(event.getCode().equals(KeyCode.ENTER))
+//            {
+//                try
+//                {
+//                    if (property instanceof DoubleProperty && !value.getText().equals("")) property.setValue(Double.parseDouble(value.getText()));
+//                    else if (!value.getText().equals("") && (property.getName().equals("fill") || property.getName().equals("stroke")))
+//                    {
+//                        property.setValue(Color.valueOf(value.getText()));
+//                    }
+//                } catch (Exception e)
+//                {
+//                    new AlertBox("Wrong Input", "Error", "I Know", "Cancel");
+//                    value.setText(property.getValue() != null?property.getValue().toString():"");
+//                }
+//                name.requestFocus();
+//            }
+//        });
         value.focusedProperty().addListener((focused, pre, now) ->
         {
             if(!now)
             {
                 try
                 {
-                    if(property instanceof DoubleProperty)property.setValue(Double.parseDouble(value.getText()));
-                    else if(property.getName().equals("fill")||property.getName().equals("stroke"))
+                    if(property instanceof DoubleProperty && !value.getText().equals(""))property.setValue(Double.parseDouble(value.getText()));
+                    else if(!value.getText().equals("") && (property.getName().equals("fill")||property.getName().equals("stroke")))
                     {
                         property.setValue(Color.valueOf(value.getText()));
                     }
                 }catch (Exception e)
                 {
                     new AlertBox("Wrong Input","Error","I Know","Cancel");
+                    value.setText(property.getValue() != null?property.getValue().toString():"");
                 }
             }
         });

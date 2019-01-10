@@ -1,9 +1,8 @@
 package drawingBoard;
 
-import gsdl.Desrializer;
+import gsdl.Deserializer;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
@@ -77,7 +76,7 @@ public class MenuBar extends javafx.scene.control.MenuBar
                 {
                     if(file!=null)
                     {
-                        LittleDesrailizer desrializer = new LittleDesrailizer(file);
+                        LittleDeserializer desrializer = new LittleDeserializer(file);
                         desrializer.setObject(fa.getMyCenter().getObject());
                     }
                 }catch (IOException e)
@@ -167,9 +166,9 @@ public class MenuBar extends javafx.scene.control.MenuBar
         });
         this.getMenus().addAll(fileMenu,drawMenu);
     }
-    private class LittleDesrailizer extends Desrializer
+    private class LittleDeserializer extends Deserializer
     {
-        public LittleDesrailizer(File file) throws IOException
+        public LittleDeserializer(File file) throws IOException
         {
             super(file);
         }
