@@ -20,10 +20,10 @@ public class MainPane extends BorderPane
         right =new PropertyBar(this);
 
         setCenter(center);//中间的画板
-        setTop(top);//上面的菜单
-        setBottom(bottom);//下面的坐标提示栏
         setLeft(left);//左边的工具栏
         setRight(right);//右边的属性栏
+        setTop(top);//上面的菜单
+        setBottom(bottom);//下面的坐标提示栏
     }
 
     public MenuBar getMyTop()

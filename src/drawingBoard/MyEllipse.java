@@ -12,7 +12,9 @@ public class MyEllipse implements Tool
     public void press(MouseEvent e, Board pane)
     {
         currentEllipse=new Ellipse(e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2,0,0);
+        currentEllipse.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
         currentEllipse.setFill(pane.fa.getMyLeft().getColor());
+        currentEllipse.setStroke(pane.fa.getMyLeft().getColor());
         leftx=e.getX();lefty=e.getY();
         pane.add(currentEllipse);
     }

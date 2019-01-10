@@ -4,9 +4,12 @@ import javafx.beans.property.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.geometry.Orientation;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Light;
@@ -31,15 +34,31 @@ public class PropertyBar extends Pane
     private ArrayList<ArrayList<Property>> objectProperty = new ArrayList<>();
     private HashSet<Shape> selected = new HashSet<>();
     private Shape nowShape;
+    private ScrollBar scrollBar = new ScrollBar();
+    private Group layout = new Group();
     public ArrayList<ArrayList<Property>> getObjectProperty()
     {
         return objectProperty;
+    }
+    public Label getName()
+    {
+        return name;
     }
 
     //    private ArrayList<TreeMap<String,String>>objectProperty = new ArrayList<>();
     public PropertyBar(MainPane fa)
     {
 //        prefWidthProperty().bind(fa.widthProperty().divide(7));
+        scrollBar.setOrientation(Orientation.VERTICAL);
+        scrollBar.setPrefWidth(20);
+        scrollBar.layoutXProperty().bind(prefWidthProperty().subtract(scrollBar.getPrefWidth()));
+        scrollBar.prefHeightProperty().bind(heightProperty());
+        getChildren().add(scrollBar);
+        scrollBar.valueProperty().addListener((value, pre, now)->
+        {
+            layout.setLayoutY(-now.doubleValue());
+        });
+
         setPrefWidth(250);
         this.fa=fa;
         setStyle("-fx-background-color: linear-gradient(to top, SkyBlue, RoyalBlue, SkyBlue);");
@@ -61,7 +80,8 @@ public class PropertyBar extends Pane
         name.setTextFill(Color.WHITE);
         name.setLayoutX(40);
         name.setEffect(innerShadow);
-        getChildren().add(name);
+        layout.getChildren().add(name);
+        getChildren().add(layout);
 
     }
     public void initBind()
@@ -309,7 +329,7 @@ public class PropertyBar extends Pane
         if(selected.size() == 0)
         {
             setName("");
-            getChildren().remove(1,getChildren().size());
+            layout.getChildren().remove(1,layout.getChildren().size());
         }
         if(selected.size() == 1)
             changeItem(nowShape);
@@ -320,7 +340,7 @@ public class PropertyBar extends Pane
     {
         setName("Group");
         TreeMap<String,ArrayList<Property>> treeMap = check();
-        getChildren().remove(1, getChildren().size());
+        layout.getChildren().remove(1, layout.getChildren().size());
         double y = name.getLayoutY() + 40;
         for(String key:treeMap.keySet())
         {
@@ -331,10 +351,11 @@ public class PropertyBar extends Pane
             lKey.setLayoutX(5);
             tValue.setLayoutX(getWidth()*2/5);
             tValue.prefWidthProperty().bind(widthProperty().divide(2));
-            getChildren().addAll(lKey, tValue);
+            layout.getChildren().addAll(lKey, tValue);
 
             changeValue(tValue, treeMap.get(key));
         }
+        scrollBar.setMax(y);
     }
     public void changeItem(Shape shape)
     {
@@ -347,7 +368,7 @@ public class PropertyBar extends Pane
     }
     private void changeItem(Shape shape, int i)
     {
-        getChildren().remove(1,getChildren().size());
+        layout.getChildren().remove(1,layout.getChildren().size());
         double y = name.getLayoutY()+40;
         for(Property property: objectProperty.get(i))
         {
@@ -362,7 +383,7 @@ public class PropertyBar extends Pane
             key.setLayoutX(5);
             value.setLayoutX(getWidth()*2/5);
             value.prefWidthProperty().bind(widthProperty().divide(2));
-            getChildren().addAll(key, value);
+            layout.getChildren().addAll(key, value);
 
             changeValue(value,property);
             if(property instanceof PointsProperty)
@@ -387,9 +408,11 @@ public class PropertyBar extends Pane
                             fa.getMyCenter().delete(shape);
                         }
                     });
-                    button.setLayoutX(value.getLayoutX()+value.getPrefWidth());
+                    button.setPrefWidth(30);
+                    button.setLayoutX(scrollBar.getLayoutX()-button.getPrefWidth());
+//                    button.setLayoutX(value.getLayoutX()+value.getPrefWidth());
                     button.setLayoutY(y);
-                    getChildren().add(button);
+                    layout.getChildren().add(button);
                 }
                 else
                 {
@@ -397,6 +420,7 @@ public class PropertyBar extends Pane
                 }
             }
         }
+        scrollBar.setMax(y);
     }
     private void changeValue(TextField value, ArrayList<Property> properties)
     {
@@ -462,6 +486,12 @@ public class PropertyBar extends Pane
             }
         });
     }
+
+    public HashSet<Shape> getSelected()
+    {
+        return selected;
+    }
+
     private class PointsProperty extends SimpleDoubleProperty
     {
         private String name;

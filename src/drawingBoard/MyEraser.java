@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Shape;
 
+import java.util.ArrayList;
+
 public class MyEraser implements Tool
 {
     @Override
@@ -32,10 +34,16 @@ public class MyEraser implements Tool
 
     private void delete(double x1, double y1, double x2, double y2, Group object, Board pane)
     {
+        ArrayList<Shape> deleteBuffer = new ArrayList<>();
         for(Node node:object.getChildren())
             if(Geometry.inRange(x1,y1,x2,y2,node))
             {
-                pane.delete((Shape) node);
+                deleteBuffer.add((Shape)node);
             }
+        for(Shape shape:deleteBuffer)
+        {
+            pane.fa.getMyRight().getSelected().remove(shape);
+            pane.delete(shape);
+        }
     }
 }

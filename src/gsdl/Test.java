@@ -2,7 +2,6 @@ package gsdl;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -15,8 +14,8 @@ public class Test extends Application
     {
         File file = new File("testingFile/timeline.gsdl");
         TimelineDeserializer desrializer = new TimelineDeserializer(file);
-        BorderPane pane = new BorderPane(desrializer.getObject());
-        Scene scene = new Scene(pane,500,500);
+//        BorderPane pane = new BorderPane(desrializer.getObject());
+        Scene scene = new Scene(desrializer.getObject(),500,500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

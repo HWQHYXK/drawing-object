@@ -76,8 +76,8 @@ public class MenuBar extends javafx.scene.control.MenuBar
                 {
                     if(file!=null)
                     {
-                        LittleDeserializer desrializer = new LittleDeserializer(file);
-                        desrializer.setObject(fa.getMyCenter().getObject());
+                        LittleDeserializer deserializer = new LittleDeserializer(file);
+                        deserializer.setObject(fa.getMyCenter().getObject());
                     }
                 }catch (IOException e)
                 {
