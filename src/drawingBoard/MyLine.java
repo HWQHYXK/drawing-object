@@ -8,7 +8,7 @@ import javafx.scene.shape.Line;
 
 import java.io.Serializable;
 
-public class MyLine extends Line implements Tool, Serializable
+public class MyLine extends Line implements Tool
 {
     private Line currentLine = new Line();
     @Override
