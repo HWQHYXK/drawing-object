@@ -57,7 +57,7 @@ public class ToolBar extends VBox
 
         myCubicCurve = new MyCubicCurve();
         this.add(myCubicCurve);
-        imageView = new ImageView("image/line.png");
+        imageView = new ImageView("image/cubiccurve.png");
         cubicCurve = new Button("CubicCurve", imageView);
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
@@ -82,7 +82,7 @@ public class ToolBar extends VBox
 
         myPolyline = new MyPolyline();
         this.add(myPolyline);
-        imageView = new ImageView("image/rectangle.png");
+        imageView = new ImageView("image/polyline.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
         polygon = new Button("Poly", imageView);
