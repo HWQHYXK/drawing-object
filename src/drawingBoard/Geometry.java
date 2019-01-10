@@ -29,12 +29,11 @@ public class Geometry
     {
         x1 = x1 - node.getLayoutX();y1 = y1 - node.getLayoutY();
         x2 = x2 - node.getLayoutX();y2 = y2 - node.getLayoutY();
-
         //被包含
-        if(contain(node,x1-getCenterX(node),y1-getCenterY(node))) return true;
-        if(contain(node,x1-getCenterX(node),y2-getCenterY(node))) return true;
-        if(contain(node,x2-getCenterX(node),y1-getCenterY(node))) return true;
-        if(contain(node,x2-getCenterX(node),y2-getCenterY(node))) return true;
+        if(contain(node,x1,y1)) return true;
+        if(contain(node,x1,y2)) return true;
+        if(contain(node,x2,y1)) return true;
+        if(contain(node,x2,y2)) return true;
 
         //相交
         if(intersect(x1,y1,x2,y2,node)) return true;
@@ -182,8 +181,8 @@ public class Geometry
         Point A=new Point(l.getStartX(),l.getStartY());
         Point B=new Point(l.getEndX(),l.getEndY());
         Boolean containsA,containsB;
-        containsA=ellipse.contains(A.x-ellipse.getScaleX(),A.y-ellipse.getScaleY());
-        containsB=ellipse.contains(B.x-ellipse.getScaleX(),B.y-ellipse.getScaleY());
+        containsA=ellipse.contains(A.x,A.y);
+        containsB=ellipse.contains(B.x,B.y);
         if(containsA != containsB) return true;
         if(containsA && containsB) return false;
         A.x-=ellipse.getCenterX();A.y-=ellipse.getCenterY();
