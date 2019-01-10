@@ -1,6 +1,5 @@
 package drawingBoard;
 
-import com.sun.scenario.effect.impl.sw.java.JSWBlend_BLUEPeer;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;

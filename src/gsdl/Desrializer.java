@@ -1,7 +1,6 @@
 package gsdl;
 
 import drawingBoard.AlertBox;
-import drawingBoard.SyntaxError;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;
 import javafx.scene.Group;

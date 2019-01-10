@@ -1,4 +1,4 @@
-package drawingBoard;
+package gsdl;
 
 public class SyntaxError extends RuntimeException
 {
