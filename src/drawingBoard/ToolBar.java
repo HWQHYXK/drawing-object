@@ -36,7 +36,8 @@ public class ToolBar extends VBox
         BorderStrokeStyle solid = BorderStrokeStyle.SOLID;
         setBorder(new Border(new BorderStroke(none,Color.GRAY,none,none, solid,solid,solid,solid,CornerRadii.EMPTY, new BorderWidths(3), Insets.EMPTY)));
         setPrefWidth(100);
-        setStyle("-fx-background-color: linear-gradient(to top, LightYellow, LightGreen, SkyBlue);");
+        setStyle("-fx-background-color: linear-gradient(to top, #b6b8be, LightGreen, SkyBlue);");
+        setStyle("-fx-background-image: url(/image/left.png)");
 
         ImageView imageView;
 
@@ -58,7 +59,7 @@ public class ToolBar extends VBox
 
         myCubicCurve = new MyCubicCurve();
         this.add(myCubicCurve);
-        imageView = new ImageView("image/line.png");
+        imageView = new ImageView("image/cubiccurve.png");
         cubicCurve = new ToggleButton("CubicCurve", imageView);
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
@@ -83,7 +84,7 @@ public class ToolBar extends VBox
 
         myPolyline = new MyPolyline();
         this.add(myPolyline);
-        imageView = new ImageView("image/rectangle.png");
+        imageView = new ImageView("image/polyline.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
         polygon = new ToggleButton("Poly", imageView);
@@ -203,7 +204,7 @@ public class ToolBar extends VBox
         for(Node node: getChildren())
         {
             Control button = (Control) node;
-            button.setStyle("-fx-base: #ff8c00");
+            button.setStyle("-fx-base: #c5cacd");
             button.setEffect(effect);
             button.prefWidthProperty().bind(prefWidthProperty());
             button.setOnMouseEntered(changeCursor);
