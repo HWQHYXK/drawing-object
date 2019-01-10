@@ -5,9 +5,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.Bloom;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
@@ -43,6 +45,7 @@ public class PropertyBar extends Pane
         setPrefWidth(250);
         this.fa=fa;
         setStyle("-fx-background-color: linear-gradient(to top, SkyBlue, RoyalBlue, SkyBlue);");
+        setStyle("-fx-background-image: url(/image/right.png)");
         Light.Point light = new Light.Point();
         light.setColor(Color.LIGHTBLUE);
         light.xProperty().bind(widthProperty().divide(2));
@@ -51,9 +54,13 @@ public class PropertyBar extends Pane
         Lighting lighting = new Lighting();
         lighting.setLight(light);
         lighting.setSurfaceScale(50.0);
-        InnerShadow innerShadow = new InnerShadow();
-        innerShadow.setOffsetX(2.0);
-        innerShadow.setOffsetY(2.0);
+        InnerShadow innerShadow = new InnerShadow(), innerShadow1 = new InnerShadow();
+        innerShadow.setOffsetX(0.5);
+        innerShadow.setOffsetY(0.5);
+        innerShadow.setColor(Color.BLACK);
+        innerShadow1.setOffsetX(3);
+        innerShadow1.setOffsetY(3);
+        innerShadow1.setColor(Color.BLACK);
         setEffect(innerShadow);
 
 
@@ -61,7 +68,9 @@ public class PropertyBar extends Pane
         name.setTextFill(Color.WHITE);
         name.setLayoutX(40);
         name.setEffect(innerShadow);
-        getChildren().add(name);
+        Group group = new Group(name);
+        group.setEffect(new Bloom(0.1));
+        getChildren().add(group);
 
     }
     public void initBind()
@@ -325,6 +334,7 @@ public class PropertyBar extends Pane
         for(String key:treeMap.keySet())
         {
             Label lKey = new Label(key);
+            lKey.setStyle("-fx-text-fill: #dedede");
             TextField tValue = new TextField("");
             lKey.setLayoutY(y+=40);
             tValue.setLayoutY(y);
@@ -352,6 +362,7 @@ public class PropertyBar extends Pane
         for(Property property: objectProperty.get(i))
         {
             Label key = new Label(property.getName());
+            key.setStyle("-fx-text-fill: #dedede");
             TextField value = new TextField(property.getValue() != null?property.getValue().toString():"");
             property.addListener((val, pre, now)->
             {

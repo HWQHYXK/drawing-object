@@ -33,7 +33,8 @@ public class ToolBar extends VBox
         BorderStrokeStyle solid = BorderStrokeStyle.SOLID;
         setBorder(new Border(new BorderStroke(none,Color.GRAY,none,none, solid,solid,solid,solid,CornerRadii.EMPTY, new BorderWidths(3), Insets.EMPTY)));
         setPrefWidth(100);
-        setStyle("-fx-background-color: linear-gradient(to top, LightYellow, LightGreen, SkyBlue);");
+        setStyle("-fx-background-color: linear-gradient(to top, #b6b8be, LightGreen, SkyBlue);");
+        setStyle("-fx-background-image: url(/image/left.png)");
 
         ImageView imageView;
 
@@ -179,7 +180,7 @@ public class ToolBar extends VBox
         for(Node node: getChildren())
         {
             Control button = (Control) node;
-            button.setStyle("-fx-base: #ff8c00");
+            button.setStyle("-fx-base: #c5cacd");
             button.setEffect(effect);
             button.prefWidthProperty().bind(prefWidthProperty());
             button.setOnMouseEntered(changeCursor);

@@ -5,6 +5,7 @@ import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.InnerShadow;
@@ -20,14 +21,14 @@ public class MenuBar extends javafx.scene.control.MenuBar
 {
     private MainPane fa;
     private boolean recentSave = true;
-    private Menu fileMenu = new Menu("File");
+    private Menu fileMenu;
 
     public void setRecentSave(boolean recentSave)
     {
         this.recentSave = recentSave;
     }
 
-    private Menu drawMenu = new Menu("Draw");
+    private Menu drawMenu;
     private MenuItem newMenuItem = new MenuItem("New");
     private MenuItem openMenuItem = new MenuItem("Open");
     private MenuItem saveMenuItem = new MenuItem("Save");
@@ -40,8 +41,15 @@ public class MenuBar extends javafx.scene.control.MenuBar
     public MenuBar(MainPane fa)
     {
         this.fa = fa;
-        setStyle("-fx-background-color: linear-gradient(to right, YellowGreen,  GreenYellow, Yellow);");
-        setOpacity(0.8);
+        setStyle("-fx-background-color: linear-gradient(to right, #1a1d21,  #4e5661, #1d2327);");
+        Label label1 = new Label("File");
+        label1.setStyle("-fx-text-fill: #c8c8c8");
+        Label label2 = new Label("Draw");
+        label2.setStyle("-fx-text-fill: #c8c8c8");
+        fileMenu = new Menu("",label1);
+        drawMenu = new Menu("",label2);
+        //setStyle("-fx-background-image: url(/image/top.png)");
+        //setOpacity(0.9);
         InnerShadow innerShadow = new InnerShadow();
         innerShadow.setOffsetX(1.0);
         innerShadow.setOffsetY(1.0);
