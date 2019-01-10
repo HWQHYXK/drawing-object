@@ -12,6 +12,8 @@ public class MyRectangle implements Tool
     public void press(MouseEvent e, Board pane)
     {
         currentRectangle=new Rectangle(e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2,0,0);
+        currentRectangle.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
+        currentRectangle.setStroke(pane.fa.getMyLeft().getColor());
         currentRectangle.setFill(pane.fa.getMyLeft().getColor());
         originalX=e.getX()-pane.getWidth()/2;originalY=e.getY()-pane.getHeight()/2;pane.add(currentRectangle);
     }

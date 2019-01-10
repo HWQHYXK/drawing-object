@@ -23,7 +23,8 @@ public class MyCubicCurve implements Tool
         {
             case 0:
                 currentCubicCurve = new CubicCurve(x, y, x, y, x, y, x, y);
-                //currentCubicCurve.setFill(Color.TRANSPARENT);
+                currentCubicCurve.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
+                currentCubicCurve.setFill(pane.fa.getMyLeft().getColor());
                 currentCubicCurve.setStroke(pane.fa.getMyLeft().getColor());
                 pane.add(currentCubicCurve);
                 break;

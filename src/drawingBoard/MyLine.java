@@ -15,6 +15,7 @@ public class MyLine extends Line implements Tool
     public void press(MouseEvent e,Board pane)
     {
         currentLine=new Line(e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2,e.getX()-pane.getWidth()/2,e.getY()-pane.getHeight()/2);
+        currentLine.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
         currentLine.setStroke(pane.fa.getMyLeft().getColor());
         pane.add(currentLine);
     }

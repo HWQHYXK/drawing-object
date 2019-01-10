@@ -15,11 +15,16 @@ public class MyPolyline implements Tool
             if(currentPolyline.getPoints().isEmpty()) return;
 
             currentPolyline.getPoints().addAll(currentPolyline.getPoints().get(0), currentPolyline.getPoints().get(1));
+            currentPolyline.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
+            currentPolyline.setStroke(pane.fa.getMyLeft().getColor());
             currentPolyline.setFill(pane.fa.getMyLeft().getColor());
             pane.fa.getMyRight().update(currentPolyline);
             currentPolyline =new Polyline();
             return;
         }
+        currentPolyline.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
+        currentPolyline.setFill(pane.fa.getMyLeft().getColor());
+        currentPolyline.setStroke(pane.fa.getMyLeft().getColor());
         if(currentPolyline.getPoints().isEmpty())
         {
             pane.add(currentPolyline);

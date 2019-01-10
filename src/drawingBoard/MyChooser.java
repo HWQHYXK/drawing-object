@@ -14,7 +14,7 @@ import javafx.scene.shape.Shape;
 public class MyChooser implements Tool
 {
     private double originalX,originalY;
-    private Rectangle rectangle;
+    private Rectangle rectangle = new Rectangle();
     private Board pane;
     private static Bloom bloom = new Bloom(0.3);
     @Override

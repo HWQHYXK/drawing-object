@@ -43,7 +43,7 @@ public abstract class Deserializer
             property = reader.readLine();
             row++;
             if(property.equals(""))continue;
-            Matcher matcher1 = Pattern.compile("[ ]+[a-zA-Z]+:[\\-a-zA-Z0-9.]+").matcher(property);
+            Matcher matcher1 = Pattern.compile("[ ]+[a-zA-Z0-9]+:[\\-a-zA-Z0-9.]+").matcher(property);
             if(shape.equals("Line"))
             {
                 Line line = new Line();
@@ -87,6 +87,65 @@ public abstract class Deserializer
                     else break;
                 }
                 add(line);
+            }
+            else if(shape.equals("CubicCurve"))
+            {
+                CubicCurve curve = new CubicCurve();
+                while (matcher1.matches())
+                {
+                    String left = property.split(":")[0].replaceAll("[ ]+","");
+                    String right = property.split(":")[1].replaceAll("[ ]+","");
+                    switch (left)
+                    {
+                        case "layoutX":
+                            assign(right,curve.layoutXProperty());
+                            break;
+                        case "layoutY":
+                            assign(right,curve.layoutYProperty());
+                            break;
+                        case "startX":
+                            assign(right,curve.startXProperty());
+                            break;
+                        case "startY":
+                            assign(right,curve.startYProperty());
+                            break;
+                        case "endX":
+                            assign(right,curve.endXProperty());
+                            break;
+                        case "endY":
+                            assign(right,curve.endYProperty());
+                            break;
+                        case "controlX1":
+                            assign(right,curve.controlX1Property());
+                            break;
+                        case "controlY1":
+                            assign(right,curve.controlY1Property());
+                            break;
+                        case "controlX2":
+                            assign(right,curve.controlX2Property());
+                            break;
+                        case "controlY2":
+                            assign(right,curve.controlY2Property());
+                            break;
+                        case "stroke":
+                            assign(right,curve.strokeProperty());
+                            break;
+                        case "fill":
+                            assign(right, curve.strokeProperty());
+                            break;
+                        case "rotate":
+                            assign(right,curve.rotateProperty());
+                            break;
+                        case "strokeWidth":
+                            assign(right, curve.strokeWidthProperty());
+                    }
+                    reader.mark(MAX);
+                    property = reader.readLine();
+                    row++;
+                    if(property != null)matcher1.reset(property);
+                    else break;
+                }
+                add(curve);
             }
             else if(shape.equals("Ellipse"))
             {
@@ -189,32 +248,37 @@ public abstract class Deserializer
                 {
                     String left = property.split(":")[0].replaceAll("[ ]+","");
                     String right = property.split(":")[1].replaceAll("[ ]+","");
-                    switch (left)
+                    if(left.matches("[xy][0-9]{1,5}"))
                     {
-                        case "x":
-                            polyline.getPoints().add(Double.parseDouble(right));
-                            break;
-                        case "y":
-                            polyline.getPoints().add(Double.parseDouble(right));
-                            break;
-                        case "layoutX":
-                            assign(right,polyline.layoutXProperty());
-                            break;
-                        case "layoutY":
-                            assign(right,polyline.layoutYProperty());
-                            break;
-                        case "stroke":
-                            assign(right,polyline.strokeProperty());
-                            break;
-                        case "fill":
-                            assign(right,polyline.fillProperty());
-                            break;
-                        case "rotate":
-                            assign(right,polyline.rotateProperty());
-                            break;
-                        case "strokeWidth":
-                            assign(right, polyline.strokeWidthProperty());
+                        polyline.getPoints().add(Double.parseDouble(right));
                     }
+                    else
+                        switch (left)
+                        {
+//                            case "x":
+//                                polyline.getPoints().add(Double.parseDouble(right));
+//                                break;
+//                            case "y":
+//                                polyline.getPoints().add(Double.parseDouble(right));
+//                                break;
+                            case "layoutX":
+                                assign(right,polyline.layoutXProperty());
+                                break;
+                            case "layoutY":
+                                assign(right,polyline.layoutYProperty());
+                                break;
+                            case "stroke":
+                                assign(right,polyline.strokeProperty());
+                                break;
+                            case "fill":
+                                assign(right,polyline.fillProperty());
+                                break;
+                            case "rotate":
+                                assign(right,polyline.rotateProperty());
+                                break;
+                            case "strokeWidth":
+                                assign(right, polyline.strokeWidthProperty());
+                        }
                     reader.mark(MAX);
                     property = reader.readLine();
                     row++;

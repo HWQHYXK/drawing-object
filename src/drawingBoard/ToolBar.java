@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,7 +19,9 @@ public class ToolBar extends VBox
 {
     MainPane fa;
     private Color nowColor;
+    private double nowStrokeWidth;
     private ColorPicker colorPicker;
+    private TextField strokeWidthPicker;
     private Tool nowTool,myLine, myEllipse,myRectangle, myPolyline,myEraser,myChooser,myCubicCurve;
     private ToggleButton line,circle,rectangle,polygon,eraser,chooser,cubicCurve;
     private ArrayList<Tool> allTool=new ArrayList<Tool>();
@@ -100,7 +103,28 @@ public class ToolBar extends VBox
         getChildren().add(colorPicker);
         colorPicker.setOnAction(event -> nowColor = colorPicker.getValue());
 
+        strokeWidthPicker = new TextField();
+        strokeWidthPicker.setFocusTraversable(false);
+        strokeWidthPicker.setText("2");
+        getChildren().add(strokeWidthPicker);
+        strokeWidthPicker.setOnKeyPressed(event ->
+        {
+            if(event.getCode().equals(KeyCode.ENTER)&&!strokeWidthPicker.getText().equals(""))try
+            {
+                if(strokeWidthPicker.getText().equals(""))
+                    strokeWidthPicker.setText(""+nowStrokeWidth);
+                else
+                    nowStrokeWidth = Double.parseDouble(strokeWidthPicker.getText());
+                fa.getMyRight().getName().requestFocus();
+            }catch (NumberFormatException e)
+            {
+                new AlertBox("Input a real type number!", "Error", "I know", "Cancel");
+                strokeWidthPicker.setText(""+nowStrokeWidth);
+            }
+        });
+
         nowColor = Color.BLACK;
+        nowStrokeWidth = 2;
         nowTool=allTool.get(0);
     }
     public void initBind()
@@ -242,6 +266,11 @@ public class ToolBar extends VBox
                 pressed = false;
             }
         }
+    }
+
+    public double getNowStrokeWidth()
+    {
+        return nowStrokeWidth;
     }
     public Color getColor()
     {
