@@ -160,6 +160,24 @@ public class PropertyBar extends Pane
             now.add(line.rotateProperty());
             now.add(line.strokeWidthProperty());
         }
+        else if(shape instanceof CubicCurve)
+        {
+            CubicCurve curve = (CubicCurve)shape;
+            now.add(shape.layoutXProperty());
+            now.add(shape.layoutYProperty());
+            now.add(curve.startXProperty());
+            now.add(curve.startYProperty());
+            now.add(curve.endXProperty());
+            now.add(curve.endYProperty());
+            now.add(curve.controlX1Property());
+            now.add(curve.controlY1Property());
+            now.add(curve.controlX2Property());
+            now.add(curve.controlY2Property());
+            now.add(curve.strokeProperty());
+            now.add(curve.fillProperty());
+            now.add(curve.rotateProperty());
+            now.add(curve.strokeWidthProperty());
+        }
         else if(shape instanceof Ellipse)
         {
             Ellipse ellipse = (Ellipse)shape;
@@ -321,6 +339,7 @@ public class PropertyBar extends Pane
     public void changeItem(Shape shape)
     {
         if(shape instanceof Line)setName("Line");
+        else if(shape instanceof CubicCurve)setName("Curve");
         else if(shape instanceof Ellipse)setName("Ellipse");
         else if(shape instanceof Rectangle)setName("Rectangle");
         else if(shape instanceof Polyline)setName("Polyline");
