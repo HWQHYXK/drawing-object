@@ -2,6 +2,7 @@ package drawingBoard;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application
@@ -26,6 +27,7 @@ public class Main extends Application
         pane.getMyLeft().initBind();
         pane.getMyRight().initBind();
         hwq.setTitle("Drawing Object");
+        hwq.getIcons().add(new Image("image/Icon1.png"));
         hwq.show();
     }
 
