@@ -21,8 +21,8 @@ public class ToolBar extends VBox
     MainPane fa;
     private Color nowColor;
     private ColorPicker colorPicker;
-    private Tool nowTool,myLine, myEllipse,myRectangle, myPolyline,myEraser,myChooser;
-    private Button line,circle,rectangle,polygon,eraser,chooser;
+    private Tool nowTool,myLine, myEllipse,myRectangle, myPolyline,myEraser,myChooser,myCubicCurve;
+    private Button line,circle,rectangle,polygon,eraser,chooser,cubicCurve;
     private ArrayList<Tool> allTool=new ArrayList<Tool>();
     private ChangeCursor changeCursor;
 
@@ -54,6 +54,14 @@ public class ToolBar extends VBox
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
         getChildren().add(line);
+
+        myCubicCurve = new MyCubicCurve();
+        this.add(myCubicCurve);
+        imageView = new ImageView("image/line.png");
+        cubicCurve = new Button("CubicCurve", imageView);
+        imageView.setFitHeight(20);
+        imageView.setFitWidth(20);
+        getChildren().add(cubicCurve);
 
         myEllipse =new MyEllipse();
         this.add(myEllipse);
@@ -114,6 +122,11 @@ public class ToolBar extends VBox
         line.setOnAction(event ->
         {
             switchh(myLine);
+            changeCursor.future = Cursor.CROSSHAIR;
+        });
+        cubicCurve.setOnAction(event ->
+        {
+            switchh(myCubicCurve);
             changeCursor.future = Cursor.CROSSHAIR;
         });
         circle.setOnAction(event ->

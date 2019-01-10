@@ -1,10 +1,7 @@
 package drawingBoard;
 
 import javafx.scene.Node;
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Polyline;
+import javafx.scene.shape.*;
 
 import java.util.List;
 
@@ -17,16 +14,22 @@ public class Geometry
             x=xx;y=yy;
         }
     }
-    static  double getCenterX(Node node)
+    static double getCenterX(Node node)
     {
         return (node.getLayoutBounds().getMaxX()+node.getLayoutBounds().getMinX())/2;
     }
-    static  double getCenterY(Node node)
+    static double getCenterY(Node node)
     {
         return (node.getLayoutBounds().getMaxY()+node.getLayoutBounds().getMinY())/2;
     }
+    static Line getLine(CubicCurve cubicCurve)
+    {
+        return new Line(cubicCurve.getStartX(),cubicCurve.getStartY(),cubicCurve.getEndX(),cubicCurve.getEndY());
+    }
     static boolean inRange(double x1, double y1, double x2, double y2, Node node)
     {
+        if(node instanceof CubicCurve && inRange(x1,y1,x2,y2,getLine(((CubicCurve)node)))) return true;
+
         x1 = x1 - node.getLayoutX();y1 = y1 - node.getLayoutY();
         x2 = x2 - node.getLayoutX();y2 = y2 - node.getLayoutY();
         //被包含
@@ -63,6 +66,27 @@ public class Geometry
 
             return false;
         }
+        else if(node instanceof CubicCurve)
+        {
+            CubicCurve cubicCurve=((CubicCurve)node);
+            Point A=new Point(x1,y1),B=new Point(x1,y2);
+            Point C=new Point(x2,y2),D=new Point(x2,y1);
+            if(Math.abs(angle) > eps)
+            {
+                cubicCurve=new CubicCurve(cubicCurve.getStartX(),cubicCurve.getStartY(),cubicCurve.getControlX1(),
+                cubicCurve.getControlY1(),cubicCurve.getControlX2(),cubicCurve.getControlY2(),cubicCurve.getEndX(),cubicCurve.getEndY());
+
+                Point P=new Point(getCenterX(node),getCenterY(node));
+                A=rotate(A,P,-angle);B=rotate(B,P,-angle);
+                C=rotate(C,P,-angle);D=rotate(D,P,-angle);
+            }
+            if(intersect(new Line(A.x,A.y,B.x,B.y),cubicCurve)) return true;
+            if(intersect(new Line(B.x,B.y,C.x,C.y),cubicCurve)) return true;
+            if(intersect(new Line(C.x,C.y,D.x,D.y),cubicCurve)) return true;
+            if(intersect(new Line(D.x,D.y,A.x,A.y),cubicCurve)) return true;
+
+            return false;
+        }
         else if(node instanceof Rectangle)
         {
             double X=((Rectangle) node).getX();
@@ -94,7 +118,7 @@ public class Geometry
             Ellipse ellipse=(Ellipse) node;
             Point A=new Point(x1,y1),B=new Point(x1,y2);
             Point C=new Point(x2,y2),D=new Point(x2,y1);
-            if(Math.abs(ellipse.getRotate()) > eps)
+            if(Math.abs(angle) > eps)
             {
                 ellipse=new Ellipse(ellipse.getCenterX(),ellipse.getCenterY(),ellipse.getRadiusX(),ellipse.getRadiusY());
                 Point P=new Point(getCenterX(node),getCenterY(node));
@@ -118,6 +142,10 @@ public class Geometry
         if(node instanceof Line)
         {
             return rotate(new Point(((Line)node).getStartX(),((Line)node).getStartY()),P,angle);
+        }
+        else if(node instanceof CubicCurve)
+        {
+            return rotate(new Point(((CubicCurve)node).getStartX(),((CubicCurve)node).getStartY()),P,angle);
         }
         else if(node instanceof Rectangle)
         {
@@ -204,5 +232,14 @@ public class Geometry
         double x2=(-2*a*a*t*k+Math.sqrt(delta))/(2*(a*a*k*k+b*b));
         if(x2<Math.min(A.x,B.x) || x2>Math.max(A.x,B.x)) return false;
         return true;
+    }
+    static boolean intersect(Line l,CubicCurve cubicCurve)
+    {
+        //线段l和贝塞尔曲线cubicCurve是否相交
+        l=rotate(l,l.getRotate());
+        double x0=l.getStartX(),x1=l.getEndX(),y0=l.getStartY(),y1=l.getEndY();
+        for(double t=0;t<1;t+=0.01)
+            if(cubicCurve.contains(x0+t*(x1-x0),y0+t*(y1-y0))) return true;
+        return false;
     }
 }
