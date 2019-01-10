@@ -14,14 +14,14 @@ public class MyEraser implements Tool
     public void press(MouseEvent e, Board pane)
     {
         Main.getScene().setCursor(new ImageCursor(new Image("image/rectangle.png"),100, 100));
-        delete(e.getX()-11.8-pane.getWidth()/2,e.getY()-11.8-pane.getHeight()/2,e.getX()+11.8-pane.getWidth()/2,e.getY()+11.8-pane.getHeight()/2,pane.getObject(), pane);
+        delete(e.getX()-12.8-pane.getWidth()/2,e.getY()-12.8-pane.getHeight()/2,e.getX()+12.8-pane.getWidth()/2,e.getY()+12.8-pane.getHeight()/2,pane.getObject(), pane);
     }
 
     @Override
     public void drag(MouseEvent e, Board pane)
     {
 //      pane.addEventFilter(MouseEvent.DRAG_DETECTED, event -> pane.startFullDrag());
-        delete(e.getX()-11.8-pane.getWidth()/2,e.getY()-11.8-pane.getHeight()/2,e.getX()+11.8-pane.getWidth()/2,e.getY()+11.8-pane.getHeight()/2,pane.getObject(), pane);
+        delete(e.getX()-12.8-pane.getWidth()/2,e.getY()-12.8-pane.getHeight()/2,e.getX()+12.8-pane.getWidth()/2,e.getY()+12.8-pane.getHeight()/2,pane.getObject(), pane);
     }
 
     @Override
