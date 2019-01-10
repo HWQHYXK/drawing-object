@@ -1,14 +1,13 @@
 package gsdl;
 
-import javafx.scene.Group;
 import javafx.scene.shape.Shape;
 
 import java.io.File;
 import java.io.IOException;
 
-public class DefaultDesrializer extends Desrializer
+public class DefaultDeserializer extends Deserializer
 {
-    public DefaultDesrializer(File file) throws IOException
+    public DefaultDeserializer(File file) throws IOException
     {
         super(file);
     }

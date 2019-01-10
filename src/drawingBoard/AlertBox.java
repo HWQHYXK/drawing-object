@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,16 +21,33 @@ public class AlertBox
         window.initModality(Modality.APPLICATION_MODAL);
         window.initStyle(StageStyle.UTILITY);
         window.setTitle(title);
-        window.setWidth(300);
-        window.setHeight(150);
+        window.setWidth(400);
+        window.setHeight(200);
         HBox hb = new HBox(50);
         Button confirm = new Button(yes);
         Button deny = new Button(no);
         hb.getChildren().addAll(confirm, deny);
         confirm.setPrefWidth(100);
         deny.setPrefWidth(100);
-        confirm.setStyle("-fx-background-color: Silver;-fx-background-radius: 50; -fx-text-fill:Green");
-        deny.setStyle("-fx-background-color: Silver;-fx-background-radius: 50; -fx-text-fill:DarkRed");
+        confirm.setStyle("-fx-base: Silver;-fx-background-radius: 50; -fx-text-fill:Green");
+        deny.setStyle("-fx-base: Silver;-fx-background-radius: 50; -fx-text-fill:DarkRed");
+        confirm.requestFocus();
+        confirm.setOnKeyPressed(event ->
+        {
+            if(event.getCode().equals(KeyCode.ENTER))
+            {
+                this.mode = 1;
+                window.close();
+            }
+        });
+        deny.setOnKeyPressed(event ->
+        {
+            if(event.getCode().equals(KeyCode.ENTER))
+            {
+                this.mode = -1;
+                window.close();
+            }
+        });
         confirm.setOnAction(e ->
         {
             this.mode=1;

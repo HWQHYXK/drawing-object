@@ -107,14 +107,14 @@ public class Board extends Pane
         fa.getMyRight().add(node);
         node.setOnMouseEntered(event ->
         {
-            node.setStyle("-fx-fill: INDIANRED; -fx-stroke:INDIANRED");
-            node.setEffect(bloom);
+//            node.setStyle("-fx-fill: INDIANRED; -fx-stroke:INDIANRED");
+//            node.setEffect(bloom);
             fa.getMyBottom().setSerial(String.valueOf(object.getChildren().indexOf(node)));
         });
         node.setOnMouseExited(event ->
         {
-            node.setStyle(null);
-            node.setEffect(null);
+//            node.setStyle(null);
+//            node.setEffect(null);
             fa.getMyBottom().setSerial("");
         });
         node.setOnMousePressed(event ->

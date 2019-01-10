@@ -4,21 +4,18 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
-public class TimelineDesrializer extends Desrializer
+public class TimelineDeserializer extends Deserializer
 {
     //TODO TimelineBuilder
     //TODO Copy and Paste
-    //TODO Insert to one layer
-    public TimelineDesrializer(File file) throws IOException
+    public TimelineDeserializer(File file) throws IOException
     {
         super(file);
     }

@@ -11,9 +11,9 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Desrializer
+public abstract class Deserializer
 {
-    private static int MAX = 200;
+    private static int MAX = 500;
 //    private ArrayList<HashMap<String, String>> shapeProperty = new ArrayList<>();
     protected Group object = new Group();
 
@@ -22,7 +22,7 @@ public abstract class Desrializer
         return object;
     }
 
-    public Desrializer(File file) throws IOException
+    public Deserializer(File file) throws IOException
     {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         for(int row=0;;)
@@ -44,7 +44,7 @@ public abstract class Desrializer
             row++;
             if(property.equals(""))continue;
             Matcher matcher1 = Pattern.compile("[ ]+[a-zA-Z]+:[\\-a-zA-Z0-9.]+").matcher(property);
-            if(shape.equals("Line"))//startX startY endX endY strokeWidth Color blendMode
+            if(shape.equals("Line"))
             {
                 Line line = new Line();
                 while (matcher1.matches())
@@ -77,6 +77,8 @@ public abstract class Desrializer
                         case "rotate":
                             assign(right,line.rotateProperty());
                             break;
+                        case "strokeWidth":
+                            assign(right, line.strokeWidthProperty());
                     }
                     reader.mark(MAX);
                     property = reader.readLine();
@@ -122,6 +124,8 @@ public abstract class Desrializer
                         case "rotate":
                             assign(right,ellipse.rotateProperty());
                             break;
+                        case "strokeWidth":
+                            assign(right, ellipse.strokeWidthProperty());
                     }
                     reader.mark(MAX);
                     property = reader.readLine();
@@ -167,6 +171,8 @@ public abstract class Desrializer
                         case "rotate":
                             assign(right,rectangle.rotateProperty());
                             break;
+                        case "strokeWidth":
+                            assign(right, rectangle.strokeWidthProperty());
                     }
                     reader.mark(MAX);
                     property = reader.readLine();
@@ -206,6 +212,8 @@ public abstract class Desrializer
                         case "rotate":
                             assign(right,polyline.rotateProperty());
                             break;
+                        case "strokeWidth":
+                            assign(right, polyline.strokeWidthProperty());
                     }
                     reader.mark(MAX);
                     property = reader.readLine();
@@ -244,7 +252,7 @@ public abstract class Desrializer
 //    {
 //        group.getChildren().add(node);
 //    }
-//    public Desrializer(File file) throws IOException
+//    public Deserializer(File file) throws IOException
 //    {
 //        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 //        for(int i=0,line=0;;i++)
@@ -370,6 +378,6 @@ public abstract class Desrializer
 //    }
 //    public static void main(String[] args) throws IOException
 //    {
-//        new Desrializer(new File("object"));
+//        new Deserializer(new File("object"));
 //    }
 }

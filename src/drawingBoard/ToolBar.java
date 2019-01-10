@@ -4,9 +4,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Control;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
@@ -22,7 +20,7 @@ public class ToolBar extends VBox
     private Color nowColor;
     private ColorPicker colorPicker;
     private Tool nowTool,myLine, myEllipse,myRectangle, myPolyline,myEraser,myChooser;
-    private Button line,circle,rectangle,polygon,eraser,chooser;
+    private ToggleButton line,circle,rectangle,polygon,eraser,chooser;
     private ArrayList<Tool> allTool=new ArrayList<Tool>();
     private ChangeCursor changeCursor;
 
@@ -44,13 +42,13 @@ public class ToolBar extends VBox
         imageView = new ImageView("image/chooser.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-        chooser = new Button("Select", imageView);
+        chooser = new ToggleButton("Select", imageView);
         getChildren().add(chooser);
 
         myLine = new MyLine();
         this.add(myLine);
         imageView = new ImageView("image/line.png");
-        line = new Button("Line", imageView);
+        line = new ToggleButton("Line", imageView);
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
         getChildren().add(line);
@@ -60,7 +58,7 @@ public class ToolBar extends VBox
         imageView = new ImageView("image/ellipse.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-        circle = new Button("Ellipse", imageView);
+        circle = new ToggleButton("Ellipse", imageView);
         getChildren().add(circle);
 
 
@@ -69,7 +67,7 @@ public class ToolBar extends VBox
         imageView = new ImageView("image/rectangle.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-        rectangle = new Button("Rec", imageView);
+        rectangle = new ToggleButton("Rec", imageView);
         getChildren().add(rectangle);
 
         myPolyline = new MyPolyline();
@@ -77,7 +75,7 @@ public class ToolBar extends VBox
         imageView = new ImageView("image/rectangle.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-        polygon = new Button("Poly", imageView);
+        polygon = new ToggleButton("Poly", imageView);
         getChildren().add(polygon);
 
         myEraser = new MyEraser();
@@ -85,7 +83,7 @@ public class ToolBar extends VBox
         imageView = new ImageView("image/eraser.png");
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
-        eraser = new Button("MyEraser",imageView);
+        eraser = new ToggleButton("Eraser",imageView);
         getChildren().add(eraser);
 
         colorPicker = new ColorPicker();
@@ -106,33 +104,48 @@ public class ToolBar extends VBox
         this.setOnMouseDragged(dragToSuit);
         this.setOnMousePressed(dragToSuit);
         this.setOnMouseReleased(dragToSuit);
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        chooser.setToggleGroup(toggleGroup);
+        line.setToggleGroup(toggleGroup);
+        circle.setToggleGroup(toggleGroup);
+        rectangle.setToggleGroup(toggleGroup);
+        polygon.setToggleGroup(toggleGroup);
+        eraser.setToggleGroup(toggleGroup);
+
         chooser.setOnAction(event ->
         {
+            ((ToggleButton)event.getSource()).setSelected(true);
             switchh(myChooser);
             changeCursor.future = Cursor.DEFAULT;
         });
         line.setOnAction(event ->
         {
+            ((ToggleButton)event.getSource()).setSelected(true);
             switchh(myLine);
             changeCursor.future = Cursor.CROSSHAIR;
         });
         circle.setOnAction(event ->
         {
+            ((ToggleButton)event.getSource()).setSelected(true);
             switchh(myEllipse);
             changeCursor.future = Cursor.CROSSHAIR;
         });
         rectangle.setOnAction(event ->
         {
+            ((ToggleButton)event.getSource()).setSelected(true);
             switchh(myRectangle);
             changeCursor.future = Cursor.CROSSHAIR;
         });
         polygon.setOnAction(event ->
         {
+            ((ToggleButton)event.getSource()).setSelected(true);
             switchh(myPolyline);
             changeCursor.future = Cursor.CROSSHAIR;
         });
         eraser.setOnAction(event ->
         {
+            ((ToggleButton)event.getSource()).setSelected(true);
             switchh(myEraser);
             changeCursor.future = Cursor.DEFAULT;
         });
@@ -151,7 +164,7 @@ public class ToolBar extends VBox
         for(Node node: getChildren())
         {
             Control button = (Control) node;
-            button.setStyle("-fx-background-color: Silver");
+            button.setStyle("-fx-base: #ff8c00");
             button.setEffect(effect);
             button.prefWidthProperty().bind(prefWidthProperty());
             button.setOnMouseEntered(changeCursor);
