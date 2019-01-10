@@ -117,18 +117,18 @@ public class Board extends Pane
 //            node.setEffect(null);
             fa.getMyBottom().setSerial("");
         });
-        node.setOnMousePressed(event ->
-        {
-            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
-        });
-        node.setOnMouseDragEntered(event ->
-        {
-            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
-        });
-        node.setOnMouseDragOver(event ->
-        {
-            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
-        });
+//        node.setOnMousePressed(event ->
+//        {
+//            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
+//        });
+//        node.setOnMouseDragEntered(event ->
+//        {
+//            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
+//        });
+//        node.setOnMouseDragOver(event ->
+//        {
+//            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
+//        });
     }
     public void add(Shape node)
     {
