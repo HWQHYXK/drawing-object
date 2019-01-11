@@ -1,8 +1,10 @@
 package drawingBoard;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
 
 public class MainPane extends BorderPane
 {
@@ -24,6 +26,19 @@ public class MainPane extends BorderPane
         setRight(right);//右边的属性栏
         setTop(top);//上面的菜单
         setBottom(bottom);//下面的坐标提示栏
+
+
+        setOnKeyPressed(event ->
+        {
+            if(event.getCode().equals(KeyCode.DELETE)&&left.getTool() instanceof MyChooser)
+            {
+                System.out.println("h");
+                for (Shape shape : right.getSelected())
+                    center.delete(shape);
+                right.getSelected().clear();
+                right.getLayout().getChildren().remove(1,right.getLayout().getChildren().size());
+            }
+        });
     }
 
     public MenuBar getMyTop()

@@ -13,11 +13,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Loader extends Application
+public class Loader
 {
     private Group object;
     private BufferedWriter writer;
-    private void operate(Group object) throws IOException
+    public void operate(Group object) throws IOException
     {
         for (Node shape : object.getChildren())
         {
@@ -132,28 +132,15 @@ public class Loader extends Application
             }
         }
     }
-    public Loader(File file, Group object) throws IOException
+    public Loader(File file) throws IOException
     {
-        this.object = object;
+        if(!file.exists())file.createNewFile();
         writer = new BufferedWriter(new FileWriter(file));
-        operate(object);
     }
     private void write(Property property) throws IOException
     {
         writer.write("  "+property.getName()+":"+property.getValue());
         writer.newLine();
         writer.flush();
-    }
-    @Override
-    public void start(Stage primaryStage)
-    {
-        primaryStage.showAndWait();
-        Main main = new Main();
-        main.start(primaryStage);
-        for(Node node:object.getChildren())
-        {
-            if(node instanceof Shape)
-                main.getPane().getMyCenter().load((Shape)node);
-        }
     }
 }

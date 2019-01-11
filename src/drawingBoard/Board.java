@@ -1,13 +1,13 @@
 package drawingBoard;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
@@ -117,6 +117,9 @@ public class Board extends Pane
 //            node.setEffect(null);
             fa.getMyBottom().setSerial("");
         });
+        MoveProcessor processor = new MoveProcessor();
+        node.setOnMousePressed(processor);
+        node.setOnMouseDragged(processor);
 //        node.setOnMousePressed(event ->
 //        {
 //            if(fa.getMyLeft().getTool() instanceof MyEraser)delete(node);
@@ -144,5 +147,33 @@ public class Board extends Pane
     {
         fa.getMyRight().clear();
         object.getChildren().clear();
+    }
+    private class MoveProcessor implements EventHandler<MouseEvent>
+    {
+        private double originalX = 0, originalY = 0;
+        @Override
+        public void handle(MouseEvent event)
+        {
+            if(fa.getMyLeft().getTool() instanceof MyChooser)
+            {
+
+                if(event.getEventType().equals(MouseEvent.MOUSE_PRESSED))
+                {
+                    if(event.getButton().equals(MouseButton.SECONDARY))
+                    {
+                        originalX = event.getX();//+((Node)event.getSource()).getLayoutX();
+                        originalY = event.getY();//+((Node)event.getSource()).getLayoutY();
+                    }
+                }
+                if(event.getEventType().equals(MouseEvent.MOUSE_DRAGGED))
+                {
+                    if(event.getButton().equals(MouseButton.SECONDARY))
+                    {
+                        ((Node)event.getSource()).setLayoutX(((Node)event.getSource()).getLayoutX()+event.getX()-originalX);
+                        ((Node)event.getSource()).setLayoutY(((Node)event.getSource()).getLayoutY()+event.getY()- originalY);
+                    }
+                }
+            }
+        }
     }
 }

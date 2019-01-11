@@ -42,7 +42,7 @@ public class MyEraser implements Tool
             }
         for(Shape shape:deleteBuffer)
         {
-            pane.fa.getMyRight().getSelected().remove(shape);
+            pane.fa.getMyRight().deleteSelected(shape);
             pane.delete(shape);
         }
     }

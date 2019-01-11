@@ -145,6 +145,7 @@ public class Cue extends HBox
                                 for (Shape shape : fa.getMyRight().getSelected())
                                     fa.getMyCenter().delete(shape);
                                 fa.getMyRight().getSelected().clear();
+                                fa.getMyRight().getLayout().getChildren().remove(1,fa.getMyRight().getLayout().getChildren().size());
                             }
                             else
                                 new AlertBox("Invalid Input.", "Error","I know", "Cancel");

@@ -10,6 +10,20 @@ public class MyPolyline implements Tool
     @Override
     public void press(MouseEvent e, Board pane)
     {
+        if(!pane.getObject().getChildren().contains(currentPolyline))
+        {
+            currentPolyline =new Polyline();
+            currentPolyline.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
+            currentPolyline.setFill(pane.fa.getMyLeft().getColor());
+            currentPolyline.setStroke(pane.fa.getMyLeft().getColor());
+            if(currentPolyline.getPoints().isEmpty())
+            {
+                pane.add(currentPolyline);
+                currentPolyline.getPoints().addAll(e.getX()-pane.getWidth()/2, e.getY()-pane.getHeight()/2);
+            }
+            currentPolyline.getPoints().addAll(e.getX()-pane.getWidth()/2, e.getY()-pane.getHeight()/2);
+            return;
+        }
         if(e.getButton().equals(MouseButton.SECONDARY))
         {
             if(currentPolyline.getPoints().isEmpty()) return;

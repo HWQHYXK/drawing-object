@@ -29,7 +29,6 @@ public class Main extends Application
         pane.getMyRight().initBind();
         hwq.setTitle("Drawing Object");
         hwq.getIcons().add(new Image("image/Icon1.png"));
-        hwq.setMaximized(true);
         hwq.show();
     }
 

@@ -60,7 +60,7 @@ public class ToolBar extends VBox
         myCubicCurve = new MyCubicCurve();
         this.add(myCubicCurve);
         imageView = new ImageView("image/cubiccurve.png");
-        cubicCurve = new ToggleButton("CubicCurve", imageView);
+        cubicCurve = new ToggleButton("Curve", imageView);
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
         getChildren().add(cubicCurve);

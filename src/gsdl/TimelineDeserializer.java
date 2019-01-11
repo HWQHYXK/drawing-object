@@ -1,8 +1,6 @@
 package gsdl;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
@@ -23,19 +21,12 @@ public class TimelineDeserializer extends Deserializer
     protected void add(Shape node)
     {
         object.getChildren().add(node);
-        if(node instanceof Line)
-        {
-            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(200),new KeyValue(((Line) node).endYProperty(), -40), new KeyValue(((Line) node).endXProperty(), -300)));
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.setDelay(Duration.millis(200));
-            timeline.play();
-        }
-        if(node.getFill() != null && node.getFill().equals(Color.ORANGE))
-        {
-            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1),new KeyValue(node.layoutXProperty(), 500)));
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.setDelay(Duration.millis(200));
-            timeline.play();
-        }
+        TranslateTransition transition = new TranslateTransition();
+        transition.setByY(100);
+        transition.setNode(node);
+        transition.setDuration(Duration.millis(500));
+        transition.setAutoReverse(true);
+        transition.setCycleCount(Timeline.INDEFINITE);
+        transition.play();
     }
 }

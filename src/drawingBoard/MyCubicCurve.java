@@ -12,11 +12,21 @@ public class MyCubicCurve implements Tool
     @Override
     public void press(MouseEvent e, Board pane)
     {
+        if(!pane.getObject().getChildren().contains(currentCubicCurve))
+        {
+            nowId = 0;
+            double x=e.getX()-pane.getWidth()/2,y=e.getY()-pane.getHeight()/2;
+            currentCubicCurve = new CubicCurve(x, y, x, y, x, y, x, y);
+            currentCubicCurve.setStrokeWidth(pane.fa.getMyLeft().getNowStrokeWidth());
+            currentCubicCurve.setFill(pane.fa.getMyLeft().getColor());
+            currentCubicCurve.setStroke(pane.fa.getMyLeft().getColor());
+            pane.add(currentCubicCurve);
+            return;
+        }
         if(e.getButton().equals(MouseButton.SECONDARY))
         {
             nowId=2;return;
         }
-
         double x=e.getX()-pane.getWidth()/2,y=e.getY()-pane.getHeight()/2;
         nowId=(nowId+1)%3;
         switch (nowId)

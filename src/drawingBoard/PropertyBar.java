@@ -23,17 +23,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeMap;
+import java.util.*;
 
 public class PropertyBar extends Pane
 {
     MainPane fa;
     private Label name = new Label("Hello");
     private ArrayList<ArrayList<Property>> objectProperty = new ArrayList<>();
-    private HashSet<Shape> selected = new HashSet<>();
+    private LinkedList<Shape> selected = new LinkedList<>();
     private Shape nowShape;
     private ScrollBar scrollBar = new ScrollBar();
     private Group layout = new Group();
@@ -58,6 +55,10 @@ public class PropertyBar extends Pane
         scrollBar.valueProperty().addListener((value, pre, now)->
         {
             layout.setLayoutY(-now.doubleValue());
+        });
+        setOnScroll(event ->
+        {
+            scrollBar.setValue(scrollBar.getValue()-event.getDeltaY());
         });
 
         setPrefWidth(250);
@@ -266,7 +267,7 @@ public class PropertyBar extends Pane
         int i = fa.getMyCenter().getObject().getChildren().indexOf(shape);
         if(i != -1)
         {
-            delete(fa.getMyCenter().getObject().getChildren().indexOf(shape));
+            delete(i);
         }
     }
     private void delete(int i)
@@ -279,13 +280,16 @@ public class PropertyBar extends Pane
     }
     public void addSelected(Shape shape)
     {
-        selected.add(shape);
+        if(!selected.contains(shape))
+            selected.add(shape);
         if(selected.size() == 1)nowShape = shape;
         else nowShape = null;
     }
     public void deleteSelected(Shape shape)
     {
         selected.remove(shape);
+        if(selected.size() == 1)nowShape = selected.get(0);
+        else nowShape = null;
     }
     private TreeMap<String, ArrayList<Property>> check()
     {
@@ -380,6 +384,10 @@ public class PropertyBar extends Pane
     {
         layout.getChildren().remove(1,layout.getChildren().size());
         double y = name.getLayoutY()+40;
+//        if( i == -1)
+//        {
+//            System.out.println();
+//        }
         for(Property property: objectProperty.get(i))
         {
             Label key = new Label(property.getName());
@@ -416,7 +424,9 @@ public class PropertyBar extends Pane
                         ((Polyline)shape).getPoints().remove(((PointsProperty)property).getIndex());
                         if(((Polyline)shape).getPoints().isEmpty())
                         {
+                            selected.clear();
                             fa.getMyCenter().delete(shape);
+                            layout.getChildren().remove(1,layout.getChildren().size());
                         }
                     });
                     button.setPrefWidth(30);
@@ -498,7 +508,7 @@ public class PropertyBar extends Pane
         });
     }
 
-    public HashSet<Shape> getSelected()
+    public LinkedList<Shape> getSelected()
     {
         return selected;
     }
@@ -567,8 +577,14 @@ public class PropertyBar extends Pane
         {
             return name;
         }
+
     }
-//    private class PositionProperty extends ObjectProperty<Pair<Double,Double>>
+
+    public Group getLayout()
+    {
+        return layout;
+    }
+    //    private class PositionProperty extends ObjectProperty<Pair<Double,Double>>
 //    {
 //        private Polyline polyline;
 //        private Pair<Double,Double> position;

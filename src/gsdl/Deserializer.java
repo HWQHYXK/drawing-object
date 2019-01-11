@@ -131,7 +131,7 @@ public abstract class Deserializer
                             assign(right,curve.strokeProperty());
                             break;
                         case "fill":
-                            assign(right, curve.strokeProperty());
+                            assign(right, curve.fillProperty());
                             break;
                         case "rotate":
                             assign(right,curve.rotateProperty());
