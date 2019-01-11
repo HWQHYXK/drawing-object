@@ -32,7 +32,6 @@ public class MainPane extends BorderPane
         {
             if(event.getCode().equals(KeyCode.DELETE)&&left.getTool() instanceof MyChooser)
             {
-                System.out.println("h");
                 for (Shape shape : right.getSelected())
                     center.delete(shape);
                 right.getSelected().clear();

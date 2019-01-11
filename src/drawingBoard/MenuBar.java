@@ -74,7 +74,7 @@ public class MenuBar extends javafx.scene.control.MenuBar
         openMenuItem.setOnAction(event ->
         {
             FileChooser fileChooser = new FileChooser();
-            newMenuItem.getOnAction().handle(event);
+//            newMenuItem.getOnAction().handle(event);
             try
             {
                 fileChooser.setInitialDirectory(new File("./"));
@@ -89,7 +89,6 @@ public class MenuBar extends javafx.scene.control.MenuBar
                     if(file!=null)
                     {
                         LittleDeserializer deserializer = new LittleDeserializer(file);
-                        deserializer.setObject(fa.getMyCenter().getObject());
                     }
                 }catch (IOException e)
                 {

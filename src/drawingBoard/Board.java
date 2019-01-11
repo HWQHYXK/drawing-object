@@ -145,6 +145,7 @@ public class Board extends Pane
     }
     public void clear()
     {
+        fa.getMyRight().getSelected().clear();
         fa.getMyRight().clear();
         object.getChildren().clear();
     }
