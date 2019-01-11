@@ -1,4 +1,5 @@
 # MyLine
+[←back to catalogue](summary.md)
 ## 功能
 > 绘制线段
 ## 应对误点导致的绘制出的极小图形

@@ -503,7 +503,7 @@ public class PropertyBar extends Pane
         return selected;
     }
 
-    private class PointsProperty extends SimpleDoubleProperty
+    public class PointsProperty extends SimpleDoubleProperty
     {
         private String name;
         private int index = -1;

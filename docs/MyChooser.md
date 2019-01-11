@@ -1,4 +1,5 @@
 # MyChooser
+[←back to catalogue](summary.md)
 ## 功能
 > * 单击选择
 > * 矩形拖拽选择

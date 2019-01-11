@@ -9,6 +9,7 @@ public class Main extends Application
 {
     private static Stage stage;
     private static Scene scene;
+    private MainPane pane;
     private static ChangeCursor changeCursor;
     public static Stage getStage()
     {
@@ -18,9 +19,9 @@ public class Main extends Application
     public void start(Stage hwq)
     {
         stage = hwq;
-        MainPane pane=new MainPane();
-        pane.setPrefWidth(1800);
-        pane.setPrefHeight(900);
+        pane=new MainPane();
+        pane.setPrefWidth(1200);
+        pane.setPrefHeight(800);
         scene=new Scene(pane);
         hwq.setScene(scene);
         changeCursor = new ChangeCursor();
@@ -28,7 +29,13 @@ public class Main extends Application
         pane.getMyRight().initBind();
         hwq.setTitle("Drawing Object");
         hwq.getIcons().add(new Image("image/Icon1.png"));
+        hwq.setMaximized(true);
         hwq.show();
+    }
+
+    public MainPane getPane()
+    {
+        return pane;
     }
 
     public static ChangeCursor getChangeCursor()

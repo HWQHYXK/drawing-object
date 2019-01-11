@@ -2,16 +2,20 @@ package drawingBoard;
 
 import gsdl.Deserializer;
 import javafx.beans.property.Property;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.InnerShadow;
+import javafx.scene.image.WritableImage;
 import javafx.scene.shape.*;
 import javafx.stage.FileChooser;
 
+import javax.imageio.ImageIO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -96,7 +100,40 @@ public class MenuBar extends javafx.scene.control.MenuBar
         });
         saveMenuItem.setOnAction(event ->
         {
-            exportMenuItem.getOnAction().handle(event);
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File("./"));
+            try
+            {
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Geometry Shape Description Language(*.gsdl)","*.gsdl"),
+                        new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"),
+                        new FileChooser.ExtensionFilter("All(*.*)", "*.*"));
+                File file = fileChooser.showSaveDialog(Main.getStage());
+                if(file != null)
+                {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                    Pattern pattern = Pattern.compile("shape\\.([a-zA-Z]+)");
+                    for(ArrayList<Property> arrayList: fa.getMyRight().getObjectProperty())
+                    {
+                        Matcher matcher = pattern.matcher(fa.getMyCenter().getObject().getChildren().get(fa.getMyRight().getObjectProperty().indexOf(arrayList)).getClass().toString());
+                        if(matcher.find())
+                        {
+                            writer.write(matcher.group(1));
+                            writer.newLine();
+                        }
+                        for(Property property:arrayList)
+                        {
+                            writer.write("  "+property.getName()+":"+property.getValue());
+                            writer.newLine();
+                        }
+                        writer.flush();
+                    }
+                    recentSave = true;
+                }
+            }catch (IOException e)
+            {
+                AlertBox alertBox = new AlertBox("IOException", "Error", "Retry", "Cancel");
+                if(alertBox.getMode() == 1)saveMenuItem.getOnAction().handle(event);
+            }
 //            try
 //            {
 //                FileChooser fileChooser = new FileChooser();
@@ -127,35 +164,19 @@ public class MenuBar extends javafx.scene.control.MenuBar
             fileChooser.setInitialDirectory(new File("./"));
             try
             {
-                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Geometry Shape Description Language(*.gsdl)","*.gsdl"),
-                    new FileChooser.ExtensionFilter("Text(*.txt)", "*.txt"),
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Portable Network Graphics(*.png)","*.png"),
+                    new FileChooser.ExtensionFilter("JPG(*.jpg)", "*.jpg"),
                     new FileChooser.ExtensionFilter("All(*.*)", "*.*"));
                 File file = fileChooser.showSaveDialog(Main.getStage());
+                WritableImage image = fa.getMyCenter().getObject().snapshot(new SnapshotParameters(),null);
                 if(file != null)
                 {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                    Pattern pattern = Pattern.compile("shape\\.([a-zA-Z]+)");
-                    for(ArrayList<Property> arrayList: fa.getMyRight().getObjectProperty())
-                    {
-                        Matcher matcher = pattern.matcher(fa.getMyCenter().getObject().getChildren().get(fa.getMyRight().getObjectProperty().indexOf(arrayList)).getClass().toString());
-                        if(matcher.find())
-                        {
-                            writer.write(matcher.group(1));
-                            writer.newLine();
-                        }
-                        for(Property property:arrayList)
-                        {
-                            writer.write("  "+property.getName()+":"+property.getValue());
-                            writer.newLine();
-                        }
-                        writer.flush();
-                    }
-                    recentSave = true;
+                    ImageIO.write(SwingFXUtils.fromFXImage(image, null), fileChooser.getSelectedExtensionFilter().getExtensions().get(0).replace("*.",""), file);
                 }
             }catch (IOException e)
             {
-                AlertBox alertBox = new AlertBox("IOException", "Error", "Retry", "Cancel");
-                if(alertBox.getMode() == 1)saveMenuItem.getOnAction().handle(event);
+                AlertBox alertBox = new AlertBox("Export fail!", "Error", "Retry", "Cancel");
+                if(alertBox.getMode() == 1)exportMenuItem.getOnAction().handle(event);
             }
         });
         exitMenuItem.setOnAction(event ->
@@ -172,7 +193,7 @@ public class MenuBar extends javafx.scene.control.MenuBar
             exitMenuItem.getOnAction().handle(new ActionEvent());
             event.consume();
         });
-        this.getMenus().addAll(fileMenu,drawMenu);
+        this.getMenus().addAll(fileMenu);
     }
     private class LittleDeserializer extends Deserializer
     {

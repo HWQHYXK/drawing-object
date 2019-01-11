@@ -14,7 +14,6 @@ public class Test extends Application
     {
         File file = new File("testingFile/timeline.gsdl");
         TimelineDeserializer desrializer = new TimelineDeserializer(file);
-//        BorderPane pane = new BorderPane(desrializer.getObject());
         Scene scene = new Scene(desrializer.getObject(),500,500);
         primaryStage.setScene(scene);
         primaryStage.show();

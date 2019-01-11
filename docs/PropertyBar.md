@@ -19,7 +19,7 @@
     public void add(Shape shape);
     public void delete(Shape shape);
     public void clear();
-    private void change(TextField value, Property property);
+    private void change();
 > * add: 向objectProperty中加入一个图形的属性列表， 对应着object新添加一个图形.
 > * delete: 从objectProperty中删除一个图形的属性列表， 对应着object删去一个图形.
 > * clear: 清空objectProperty， 对应着object清空.

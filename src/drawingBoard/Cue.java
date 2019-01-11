@@ -165,7 +165,7 @@ public class Cue extends HBox
                 new AlertBox("Please input a valid command format.", "Error","I know", "Cancel");
             }
         });
-        commandBar.setStyle("-fx-base: DarkBlue");
+        commandBar.setStyle("-fx-base: #99c6ff");
         getChildren().addAll(x, y, serial, new Group(lCommandBar,commandBar));
     }
 }
