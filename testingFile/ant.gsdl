@@ -1,0 +1,63 @@
+Ellipse
+  layoutX:0.0
+  layoutY:0.0
+  centerX:-0.0
+  centerY:-0.0
+  radiusX:200.0
+  radiusY:100.0
+  stroke:0xff0000ff
+  fill:0x00000000
+  rotate:0.0
+  strokeWidth:2.0
+CubicCurve
+  layoutX:0.0
+  layoutY:0.0
+  startX:-270.0
+  startY:-215.0
+  endX:-123.0
+  endY:-79.0
+  controlX1:-154.0
+  controlY1:-190.0
+  controlX2:-154.0
+  controlY2:-190.0
+  stroke:0x808080ff
+  fill:0x00000000
+  rotate:0.0
+  strokeWidth:2.0
+CubicCurve
+  layoutX:0.0
+  layoutY:0.0
+  startX:110.0
+  startY:-81.0
+  endX:220.0
+  endY:-222.0
+  controlX1:110.0
+  controlY1:-189.0
+  controlX2:110.0
+  controlY2:-189.0
+  stroke:0x808080ff
+  fill:0x00000000
+  rotate:0.0
+  strokeWidth:2.0
+Ellipse
+  layoutX:0.0
+  layoutY:0.0
+  centerX:223.0
+  centerY:-223.0
+  radiusX:8.0
+  radiusY:8.0
+  stroke:0x333333ff
+  fill:0x333333ff
+  rotate:0.0
+  strokeWidth:2.0
+Ellipse
+  layoutX:0.0
+  layoutY:0.0
+  centerX:-276.5
+  centerY:-217.0
+  radiusX:7.0
+  radiusY:7.0
+  stroke:0x333333ff
+  fill:0x333333ff
+  rotate:0.0
+  strokeWidth:2.0

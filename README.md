@@ -1,6 +1,7 @@
 # Drawing Object 对象画板
 > ***To create a simple way to design a JavaFX object***
   
+![](/src/image/demo/BigWhiteWithSword.png)
 ## 用途及背景
  **&emsp;在做Java图形化的时候，尤其是做一些小游戏/控件之类的时候，开发者往往需要一边调试参数，一边运行程序看效果是否达到了预期。而目前市面上应用最广的SceneBuilder也有其局限性，在做界面的时候的确可以带来便利，而去抠细节的时候也会非常麻烦。而这个项目对象画板就是为了避免这种小巧控件设计/游戏人物绘制/时间轴动画反复调参而产生的。 对象画板利用Java原生几何图形格式（例如：Line/Ellipse/Rectangle）这些非常熟悉的shape，来最终构造出一个几何图形的集合，最终反回到开发者手上一个Group类对象。你不光可以用它设计图形，也可以用它来加载你通过Java写出的Group到画板上，让你可以做出一些修改/美化，当然最简单的将其保存为图片也不是问题，但这并不是这个项目的用意所在。**
 ## 使用说明
@@ -99,8 +100,42 @@ private class Test
 }
 
 ```
-*然后接下来就是利用画板模块来打开你刚才所翻译的gsdl文件，然后就对你的object进行美化和再加工吧*
 ![](src/image/demo/BigWhite.png)
+*然后接下来就是利用画板模块来打开你刚才所翻译的gsdl文件，然后就对你的object进行美化和再加工吧*
+![](src/image/demo/sword.png)
+
+### ***设计独特的小控件***
+![](/src/image/demo/ant.png)
+```java
+public class Test1 extends Application // gsdl包下Test1文件，推荐运行
+{
+    @Override
+    public void start(Stage primaryStage) throws IOException
+    {
+        Pane pane = new Pane();
+        File file = new File("testingFile/ant.gsdl");
+        Deserializer deserializer = new DefaultDeserializer(file);
+        Group object = deserializer.getObject();
+        object.setLayoutX(300);
+        object.setLayoutY(250);
+        Label label = new Label("Click");
+        label.setScaleX(3);
+        label.setScaleY(3);
+        object.getChildren().add(label);
+        object.setOnMouseClicked(event ->
+        {
+            object.setLayoutX(new Random().nextDouble()*800);
+        });
+        pane.getChildren().add(object);
+        Scene scene = new Scene(pane,888,500);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}
+
+```
+效果图如下
+![](/src/image/demo/antControl.png)
 > 强烈推荐打开我们gsdl中的Test类运行一下以了解该对象画板的强大之处！
 
 ## 代码说明  
