@@ -1,5 +1,8 @@
-# Drawing Object 对象画板
-> ***To create a simple way to design a JavaFX object***
+<p align="center"> <img src="drawing-object.png" /> </p>
+
+---
+
+***To create a simple way to design a JavaFX object***
   
 ![](/src/image/demo/BigWhiteWithSword.png)
 ## 用途及背景
